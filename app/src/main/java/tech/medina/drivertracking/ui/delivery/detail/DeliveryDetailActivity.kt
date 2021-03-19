@@ -29,8 +29,8 @@ class DeliveryDetailActivity : AppCompatActivity() {
             val fragment = DeliveryDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(
-                        DeliveryDetailFragment.ARG_ITEM_ID,
-                            intent.getStringExtra(DeliveryDetailFragment.ARG_ITEM_ID))
+                        "DeliveryDetailFragment.ARG_ITEM_ID",
+                            intent.getStringExtra("DeliveryDetailFragment.ARG_ITEM_ID"))
                 }
             }
 
