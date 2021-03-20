@@ -3,6 +3,7 @@ package tech.medina.drivertracking.data.repository.delivery
 import com.google.common.truth.Truth
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import tech.medina.drivertracking.base.BaseTest
 import tech.medina.drivertracking.data.datasource.local.LocalDataSource
@@ -10,12 +11,13 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLoca
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
-import tech.medina.drivertracking.data.mapper.Mapper
+import tech.medina.drivertracking.data.mapper.MapperImpl
 import tech.medina.drivertracking.data.utils.mock
 import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.domain.model.STATUS
 
 @ExperimentalCoroutinesApi
-class DeliveryRepositoryTest : BaseTest() {
+class DeliveryRepositoryImplTest : BaseTest() {
 
     private val localDataSource = mockk<LocalDataSource> {
         coEvery { saveDelivery(any()) } returns true
@@ -33,33 +35,17 @@ class DeliveryRepositoryTest : BaseTest() {
         coEvery { postTracking(any()) } returns TrackingResponse.mock()
     }
 
-    private val mapper = Mapper()
+    private val mapper = MapperImpl()
 
     private val deliveryRepository = DeliveryRepositoryImpl(localDataSource, remoteDataSource, mapper)
 
     @Test
-    fun getDeliveryListUpdating() {
+    fun `getDeliveryList forcing update`() = dispatcher.runBlockingTest {
         with(deliveryRepository.getDeliveryList(forceUpdate = true)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isNotEmpty()
             Truth.assertThat(this.first().customerName).isNotEmpty()
-            Truth.assertThat(this.first().status).isEqualTo(Delivery.Status.DEFAULT)
-        }
-        coVerifySequence {
-            remoteDataSource.getDeliveryList()
-            localDataSource.saveDelivery(any())
-            localDataSource.getDeliveryList()
-        }
-    }
-
-    @Test
-    fun getDeliveryListFromCacheEmpty() {
-        coEvery { localDataSource.getDeliveryList() } returns emptyList()
-        with(deliveryRepository.getDeliveryList()) {
-            Truth.assertThat(this).isNotNull()
-            Truth.assertThat(this).isNotEmpty()
-            Truth.assertThat(this.first().customerName).isNotEmpty()
-            Truth.assertThat(this.first().status).isEqualTo(Delivery.Status.DEFAULT)
+            Truth.assertThat(this.first().status).isEqualTo(STATUS.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryList()
@@ -70,12 +56,28 @@ class DeliveryRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun getDeliveryListFromCachePopulated() {
+    fun `getDeliveryList is empty and must update`() = dispatcher.runBlockingTest {
+        coEvery { localDataSource.getDeliveryList() } returnsMany listOf(emptyList(),listOf(DeliveryLocal.mock()))
+        with(deliveryRepository.getDeliveryList()) {
+            Truth.assertThat(this).isNotNull()
+            Truth.assertThat(this.first().customerName).isNotEmpty()
+            Truth.assertThat(this.first().status).isEqualTo(STATUS.DEFAULT)
+        }
+        coVerifySequence {
+            localDataSource.getDeliveryList()
+            remoteDataSource.getDeliveryList()
+            localDataSource.saveDelivery(any())
+            localDataSource.getDeliveryList()
+        }
+    }
+
+    @Test
+    fun `getDeliveryList from local only`() = dispatcher.runBlockingTest {
         with(deliveryRepository.getDeliveryList()) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isNotEmpty()
             Truth.assertThat(this.first().customerName).isNotEmpty()
-            Truth.assertThat(this.first().status).isEqualTo(Delivery.Status.DEFAULT)
+            Truth.assertThat(this.first().status).isEqualTo(STATUS.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryList()
@@ -87,28 +89,27 @@ class DeliveryRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun getDeliveryDetailForIdWithNoFullData() {
-        coEvery { localDataSource.getDeliveryWithId(any()) } returns DeliveryLocal.mock()
+    fun `getDeliveryDetail from local is not complete and must update`() = dispatcher.runBlockingTest {
+        coEvery { localDataSource.getDeliveryWithId(any()) } returnsMany listOf(DeliveryLocal.mock(), DeliveryLocal.mock(isFull = true))
         with(deliveryRepository.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotEmpty()
-            Truth.assertThat(this.status).isEqualTo(Delivery.Status.DEFAULT)
+            Truth.assertThat(this.status).isEqualTo(STATUS.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryWithId(any())
             remoteDataSource.getDeliveryDetailForId(any())
             localDataSource.saveDelivery(any())
-            localDataSource.getDeliveryWithId(any())
         }
     }
 
     @Test
-    fun getDeliveryDetailForIdWithFullData() {
+    fun `getDeliveryDetail from local with full data`() = dispatcher.runBlockingTest {
         coEvery { localDataSource.getDeliveryWithId(any()) } returns DeliveryLocal.mock(isFull = true)
         with(deliveryRepository.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotEmpty()
-            Truth.assertThat(this.status).isEqualTo(Delivery.Status.DEFAULT)
+            Truth.assertThat(this.status).isEqualTo(STATUS.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryWithId(any())
@@ -120,8 +121,8 @@ class DeliveryRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun activateDelivery() {
-        with(deliveryRepository.activateDelivery(Delivery.mock())) {
+    fun `updateDelivery successfully`() = dispatcher.runBlockingTest {
+        with(deliveryRepository.updateDelivery(Delivery.mock())) {
             Truth.assertThat(this).isTrue()
         }
         coVerifySequence {
@@ -129,23 +130,4 @@ class DeliveryRepositoryTest : BaseTest() {
         }
     }
 
-    @Test
-    fun deactivateDelivery() {
-        with(deliveryRepository.deactivateDelivery(Delivery.mock())) {
-            Truth.assertThat(this).isTrue()
-        }
-        coVerifySequence {
-            localDataSource.updateDelivery(any())
-        }
-    }
-
-    @Test
-    fun deactivateAllDeliveries() {
-        with(deliveryRepository.deactivateAllDeliveries()) {
-            Truth.assertThat(this).isTrue()
-        }
-        coVerifySequence {
-            localDataSource.updateDelivery(any())
-        }
-    }
 }

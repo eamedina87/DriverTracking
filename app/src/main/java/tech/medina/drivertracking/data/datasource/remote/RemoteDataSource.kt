@@ -7,7 +7,7 @@ import tech.medina.drivertracking.data.datasource.remote.api.entities.response.T
 interface RemoteDataSource {
 
     suspend fun getDeliveryList(): DeliveryRemote
-    suspend fun getDeliveryDetailForId(id: String): DeliveryRemote.Delivery
+    suspend fun getDeliveryDetailForId(id: Long): DeliveryRemote.Delivery
     suspend fun postTracking(tracking: TrackingRemote): TrackingResponse
 
 }

@@ -14,7 +14,7 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLoca
 import tech.medina.drivertracking.data.utils.mock
 
 @ExperimentalCoroutinesApi
-class LocalDataSourceTest : BaseTest() {
+class LocalDataSourceImplTest : BaseTest() {
 
     private val database = mockk<Database>() {
         coEvery { deliveryDao().insert(any()) } returns listOf(1, 2, 3)

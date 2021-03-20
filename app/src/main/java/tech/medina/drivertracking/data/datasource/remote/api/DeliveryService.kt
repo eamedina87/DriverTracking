@@ -9,6 +9,6 @@ interface DeliveryService {
     suspend fun getDeliveryList(): DeliveryRemote
 
     @GET
-    suspend fun getDeliveryDetailForId(id: String): DeliveryRemote
+    suspend fun getDeliveryDetailForId(id: Long): DeliveryRemote
 
 }

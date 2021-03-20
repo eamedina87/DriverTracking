@@ -6,7 +6,7 @@ data class Delivery(
     val latitude: Double,
     val longitude: Double,
     val customerName: String,
-    val status: Status,
+    val status: STATUS,
     val fetchTimestamp: Long,
     val specialInstructions: String,
     val requiresSignature: Boolean
@@ -14,8 +14,15 @@ data class Delivery(
 
     companion object { }
 
-    enum class Status {
-        DEFAULT, ACTIVE, COMPLETED
-    }
-
 }
+
+enum class STATUS {
+    DEFAULT, ACTIVE, COMPLETED
+}
+
+fun Int.toDeliveryStatus(): STATUS =
+    when (this) {
+        STATUS.ACTIVE.ordinal -> STATUS.ACTIVE
+        STATUS.COMPLETED.ordinal -> STATUS.COMPLETED
+        else -> STATUS.DEFAULT
+    }

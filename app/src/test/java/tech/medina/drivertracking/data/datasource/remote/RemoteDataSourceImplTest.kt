@@ -14,7 +14,7 @@ import tech.medina.drivertracking.data.datasource.remote.api.entities.response.T
 import tech.medina.drivertracking.data.utils.mock
 
 @ExperimentalCoroutinesApi
-class RemoteDataSourceTest: BaseTest() {
+class RemoteDataSourceImplTest: BaseTest() {
 
     private val deliveryService = mockk<DeliveryService>() {
         coEvery { getDeliveryList() } returns DeliveryRemote.mock()
@@ -49,7 +49,7 @@ class RemoteDataSourceTest: BaseTest() {
 
     @Test
     fun `getDeliveryDetail from deliveryService successfully`() = dispatcher.runBlockingTest {
-        with(remoteDataSource.getDeliveryDetailForId("123")) {
+        with(remoteDataSource.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotNull()
             Truth.assertThat(this.requiresSignature).isNotNull()

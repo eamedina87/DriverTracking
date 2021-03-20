@@ -3,8 +3,9 @@ package tech.medina.drivertracking.data.datasource.local
 import tech.medina.drivertracking.data.datasource.local.db.Database
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
+import javax.inject.Inject
 
-class LocalDataSourceImpl(
+class LocalDataSourceImpl @Inject constructor(
     private val database: Database
 ): LocalDataSource {
 

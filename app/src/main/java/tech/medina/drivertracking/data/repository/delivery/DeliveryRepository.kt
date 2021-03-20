@@ -4,10 +4,8 @@ import tech.medina.drivertracking.domain.model.Delivery
 
 interface DeliveryRepository {
 
-    fun getDeliveryList(forceUpdate: Boolean = false): List<Delivery>
-    fun getDeliveryDetailForId(id: Long): Delivery
-    fun activateDelivery(delivery: Delivery): Boolean
-    fun deactivateDelivery(delivery: Delivery): Boolean
-    fun deactivateAllDeliveries(): Boolean
+    suspend fun getDeliveryList(forceUpdate: Boolean = false): List<Delivery>
+    suspend fun getDeliveryDetailForId(id: Long): Delivery
+    suspend fun updateDelivery(vararg delivery: Delivery): Boolean
 
 }
