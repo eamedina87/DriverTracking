@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class BatteryRepositoryImpl @Inject constructor(
     private val dataSource: BatteryDataSource
-    ): BatteryRepository {
+): BatteryRepository {
 
     override fun init() {
         dataSource.init()
