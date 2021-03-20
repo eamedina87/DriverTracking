@@ -22,14 +22,9 @@ class BatteryDataSourceImpl @Inject constructor(
     }
 
     private var state: State = State.DEFAULT
-    private val _currentBatteryPercentage: MutableStateFlow<Int> =
-        MutableStateFlow(-1)
-
+    private val _currentBatteryPercentage: MutableStateFlow<Int> = MutableStateFlow(-1)
     private val updatePeriod = 3 * 60 * 1000L // 3 minutes
-
-    private val timer: Timer by lazy {
-        Timer()
-    }
+    private val timer: Timer = Timer()
 
     private val timerTask: TimerTask by lazy {
         object: TimerTask() {
