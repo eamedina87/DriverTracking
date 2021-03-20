@@ -4,6 +4,8 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLoca
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
+import tech.medina.drivertracking.domain.model.Delivery
 
 fun DeliveryRemote.Companion.mock(isFull: Boolean = false): DeliveryRemote =
     DeliveryRemote(arrayOf(
@@ -48,4 +50,20 @@ fun TrackingLocal.Companion.mock(): TrackingLocal =
         timestamp = 123456,
         status = 0,
         syncTimestamp = 123456
+    )
+
+fun TrackingResponse.Companion.mock(): TrackingResponse =
+    TrackingResponse("ok")
+
+fun Delivery.Companion.mock(isFull: Boolean = false): Delivery =
+    Delivery(
+        id = 123,
+        address = "Mocked Address",
+        latitude = 42.0,
+        longitude = 2.0,
+        customerName = "Mocked Customer Name",
+        status = Delivery.Status.DEFAULT,
+        fetchTimestamp = 123456,
+        specialInstructions = if (isFull) "Mocked Special Instructions" else "",
+        requiresSignature = isFull
     )

@@ -5,7 +5,7 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLoca
 
 interface LocalDataSource {
 
-    suspend fun saveDeliveryList(vararg delivery: DeliveryLocal): Boolean
+    suspend fun saveDelivery(vararg delivery: DeliveryLocal): Boolean
     suspend fun updateDelivery(vararg delivery: DeliveryLocal): Boolean
     suspend fun getDeliveryList(): List<DeliveryLocal>
     suspend fun getDeliveryWithId(id: Long): DeliveryLocal

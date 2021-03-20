@@ -30,7 +30,7 @@ class LocalDataSourceTest : BaseTest() {
 
     @Test
     fun saveDeliveryList() = dispatcher.runBlockingTest {
-        with(localDataSource.saveDeliveryList(DeliveryLocal.mock())) {
+        with(localDataSource.saveDelivery(DeliveryLocal.mock())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }

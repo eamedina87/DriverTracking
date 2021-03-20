@@ -1,7 +1,6 @@
 package tech.medina.drivertracking.base
 
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +10,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
-import tech.medina.drivertracking.data.repository.Repository
+import tech.medina.drivertracking.data.repository.delivery.DeliveryRepository
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
@@ -21,10 +20,6 @@ open class BaseTest : CoroutineScope {
         get() = Dispatchers.Main
 
     protected lateinit var dispatcher: TestCoroutineDispatcher
-
-    protected val repository: Repository = mockk {
-
-    }
 
     @Before
     open fun before() {

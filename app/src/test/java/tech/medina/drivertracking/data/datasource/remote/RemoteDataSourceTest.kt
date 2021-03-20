@@ -22,7 +22,7 @@ class RemoteDataSourceTest: BaseTest() {
     }
 
     private val trackingService = mockk<TrackingService>() {
-        coEvery { postTracking(any()) } returns TrackingResponse("ok")
+        coEvery { postTracking(any()) } returns TrackingResponse.mock()
     }
 
     private val remoteDataSource = RemoteDataSourceImpl(deliveryService, trackingService)

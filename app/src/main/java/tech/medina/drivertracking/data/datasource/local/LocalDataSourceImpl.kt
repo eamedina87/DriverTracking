@@ -9,7 +9,7 @@ class LocalDataSourceImpl(
 ): LocalDataSource {
 
     //Delivery Dao
-    override suspend fun saveDeliveryList(vararg delivery: DeliveryLocal): Boolean =
+    override suspend fun saveDelivery(vararg delivery: DeliveryLocal): Boolean =
         database.deliveryDao().insert(* delivery).isNotEmpty()
 
     override suspend fun updateDelivery(vararg delivery: DeliveryLocal): Boolean =
