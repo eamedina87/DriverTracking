@@ -1,9 +1,6 @@
 package tech.medina.drivertracking.data.datasource.local.db.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.*
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
 
 @Dao
@@ -17,5 +14,11 @@ interface TrackingDao {
 
     @Delete
     suspend fun delete(vararg data: TrackingLocal): Int
+
+    @Query("SELECT * FROM tracking")
+    suspend fun getAll(): List<TrackingLocal>
+
+    @Query("SELECT * FROM tracking WHERE status!=:status")
+    suspend fun getAllWithStatusNot(status: Int): List<TrackingLocal>
 
 }

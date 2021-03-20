@@ -4,10 +4,7 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLoca
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
-import tech.medina.drivertracking.domain.model.Delivery
-import tech.medina.drivertracking.domain.model.STATUS
-import tech.medina.drivertracking.domain.model.Tracking
-import tech.medina.drivertracking.domain.model.toDeliveryStatus
+import tech.medina.drivertracking.domain.model.*
 import javax.inject.Inject
 
 class MapperImpl @Inject constructor(): Mapper {
@@ -19,13 +16,13 @@ class MapperImpl @Inject constructor(): Mapper {
             latitude = entity.latitude,
             longitude = entity.longitude,
             customerName = entity.customerName,
-            status = STATUS.DEFAULT.ordinal,
+            status = DeliveryStatus.DEFAULT.ordinal,
             fetchTimestamp = timestamp,
             requiresSignature = entity.requiresSignature ?: false,
             specialInstructions = entity.specialInstructions ?: ""
         )
 
-    override fun toRemote(entity: TrackingLocal, driverId: Long): TrackingRemote.TrackingData =
+    override fun toRemote(entity: TrackingLocal): TrackingRemote.TrackingData =
         TrackingRemote.TrackingData(
             latitude = entity.latitude,
             longitude = entity.longitude,
@@ -33,6 +30,13 @@ class MapperImpl @Inject constructor(): Mapper {
             batteryLevel = entity.batteryLevel,
             timestamp = entity.timestamp
         )
+
+    override fun toRemote(list: List<TrackingLocal>, driverId: Long): TrackingRemote {
+        val data = list.map {
+            toRemote(it)
+        }
+        return TrackingRemote(driverId, data)
+    }
 
     override fun toModel(entity: DeliveryLocal): Delivery =
         Delivery(
@@ -61,6 +65,25 @@ class MapperImpl @Inject constructor(): Mapper {
         )
 
     override fun toLocal(model: Tracking): TrackingLocal =
-        TODO("Tracking not defined yet")
+        TrackingLocal(
+            id = -1,
+            latitude = model.latitude,
+            longitude = model.longitude,
+            deliveryId = model.deliveryId,
+            batteryLevel = model.batteryLevel,
+            timestamp = model.timestamp,
+            status = model.status.ordinal,
+            syncTimestamp = null
+        )
+
+    override fun toModel(entity: TrackingLocal): Tracking =
+        Tracking(
+            latitude = entity.latitude,
+            longitude = entity.longitude,
+            deliveryId = entity.deliveryId,
+            batteryLevel = entity.batteryLevel,
+            timestamp = entity.timestamp,
+            status = entity.status.toTrackingStatus()
+        )
 
 }

@@ -1,4 +1,13 @@
 package tech.medina.drivertracking.data.repository.tracking
 
+import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
+import tech.medina.drivertracking.domain.model.Tracking
+
 interface TrackingRepository {
+
+    suspend fun saveTrackingData(vararg data: Tracking): Boolean
+    suspend fun getTrackingDataWithPredicate(predicate: (Tracking) -> Boolean): List<Tracking>
+    suspend fun getUnsentData(): List<Tracking>
+    suspend fun postTrackingData(list: List<TrackingLocal>, driverId: Long): Boolean
+
 }

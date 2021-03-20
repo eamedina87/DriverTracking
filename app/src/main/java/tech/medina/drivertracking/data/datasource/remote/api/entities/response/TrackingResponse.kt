@@ -8,3 +8,7 @@ data class TrackingResponse(
     companion object { }
 
 }
+
+enum class ResponseStatus(val status: String) {
+    OK("ok"), OTHER("")
+}

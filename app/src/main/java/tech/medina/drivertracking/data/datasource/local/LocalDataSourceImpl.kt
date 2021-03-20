@@ -32,4 +32,10 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun deleteTracking(vararg data: TrackingLocal): Boolean =
         database.trackingDao().delete(* data) > 0
 
+    override suspend fun getAllTracking(): List<TrackingLocal> =
+        database.trackingDao().getAll()
+
+    override suspend fun getAllTrackingWithStatusNot(status: Int): List<TrackingLocal> =
+        database.trackingDao().getAllWithStatusNot(status)
+
 }

@@ -13,5 +13,7 @@ interface LocalDataSource {
     suspend fun saveTracking(vararg data: TrackingLocal): Boolean
     suspend fun updateTracking(vararg data: TrackingLocal): Boolean
     suspend fun deleteTracking(vararg data: TrackingLocal): Boolean
+    suspend fun getAllTracking(): List<TrackingLocal>
+    suspend fun getAllTrackingWithStatusNot(status: Int): List<TrackingLocal>
 
 }

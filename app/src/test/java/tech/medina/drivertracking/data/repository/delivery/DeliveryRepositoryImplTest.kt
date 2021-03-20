@@ -11,10 +11,9 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLoca
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
-import tech.medina.drivertracking.data.mapper.MapperImpl
 import tech.medina.drivertracking.data.utils.mock
 import tech.medina.drivertracking.domain.model.Delivery
-import tech.medina.drivertracking.domain.model.STATUS
+import tech.medina.drivertracking.domain.model.DeliveryStatus
 
 @ExperimentalCoroutinesApi
 class DeliveryRepositoryImplTest : BaseTest() {
@@ -35,8 +34,6 @@ class DeliveryRepositoryImplTest : BaseTest() {
         coEvery { postTracking(any()) } returns TrackingResponse.mock()
     }
 
-    private val mapper = MapperImpl()
-
     private val deliveryRepository = DeliveryRepositoryImpl(localDataSource, remoteDataSource, mapper)
 
     @Test
@@ -45,7 +42,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isNotEmpty()
             Truth.assertThat(this.first().customerName).isNotEmpty()
-            Truth.assertThat(this.first().status).isEqualTo(STATUS.DEFAULT)
+            Truth.assertThat(this.first().status).isEqualTo(DeliveryStatus.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryList()
@@ -61,7 +58,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
         with(deliveryRepository.getDeliveryList()) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.first().customerName).isNotEmpty()
-            Truth.assertThat(this.first().status).isEqualTo(STATUS.DEFAULT)
+            Truth.assertThat(this.first().status).isEqualTo(DeliveryStatus.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryList()
@@ -77,7 +74,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isNotEmpty()
             Truth.assertThat(this.first().customerName).isNotEmpty()
-            Truth.assertThat(this.first().status).isEqualTo(STATUS.DEFAULT)
+            Truth.assertThat(this.first().status).isEqualTo(DeliveryStatus.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryList()
@@ -94,7 +91,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
         with(deliveryRepository.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotEmpty()
-            Truth.assertThat(this.status).isEqualTo(STATUS.DEFAULT)
+            Truth.assertThat(this.status).isEqualTo(DeliveryStatus.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryWithId(any())
@@ -109,7 +106,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
         with(deliveryRepository.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotEmpty()
-            Truth.assertThat(this.status).isEqualTo(STATUS.DEFAULT)
+            Truth.assertThat(this.status).isEqualTo(DeliveryStatus.DEFAULT)
         }
         coVerifySequence {
             localDataSource.getDeliveryWithId(any())

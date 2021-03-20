@@ -12,9 +12,11 @@ interface Mapper {
     //Remote to Local
     fun toLocal(entity: DeliveryRemote.Delivery, timestamp: Long): DeliveryLocal
     //Local to Remote
-    fun toRemote(entity: TrackingLocal, driverId: Long): TrackingRemote.TrackingData
+    fun toRemote(entity: TrackingLocal): TrackingRemote.TrackingData
+    fun toRemote(list: List<TrackingLocal>, driverId: Long): TrackingRemote
     //Local to Model
     fun toModel(entity: DeliveryLocal): Delivery
+    fun toModel(entity: TrackingLocal): Tracking
     //Model to Local
     fun toLocal(model: Delivery): DeliveryLocal
     fun toLocal(model: Tracking): TrackingLocal
