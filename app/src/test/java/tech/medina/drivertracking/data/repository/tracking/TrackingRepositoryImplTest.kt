@@ -81,7 +81,7 @@ class TrackingRepositoryImplTest : BaseTest() {
 
     @Test
     fun postTrackingData() = dispatcher.runBlockingTest {
-        with(trackingRepository.postTrackingData(listOf(TrackingLocal.mock()), 123)) {
+        with(trackingRepository.postTrackingData(listOf(TrackingLocal.mock()))) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }

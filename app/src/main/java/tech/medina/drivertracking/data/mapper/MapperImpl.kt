@@ -23,16 +23,16 @@ class MapperImpl @Inject constructor(): Mapper {
             specialInstructions = entity.specialInstructions ?: ""
         )
 
-    override fun toRemote(entity: TrackingLocal): TrackingRemote.TrackingData =
+    override fun toRemote(model: Tracking): TrackingRemote.TrackingData =
         TrackingRemote.TrackingData(
-            latitude = entity.latitude,
-            longitude = entity.longitude,
-            deliveryId = entity.deliveryId,
-            batteryLevel = entity.batteryLevel,
-            timestamp = entity.timestamp
+            latitude = model.latitude,
+            longitude = model.longitude,
+            deliveryId = model.deliveryId,
+            batteryLevel = model.batteryLevel,
+            timestamp = model.timestamp
         )
 
-    override fun toRemote(list: List<TrackingLocal>, driverId: Long): TrackingRemote {
+    override fun toRemote(list: List<Tracking>, driverId: Long): TrackingRemote {
         val data = list.map {
             toRemote(it)
         }
