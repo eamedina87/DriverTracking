@@ -2,6 +2,7 @@ package tech.medina.drivertracking.data.mapper
 
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
+import tech.medina.drivertracking.data.datasource.location.entity.Location
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
 import tech.medina.drivertracking.domain.model.*
@@ -86,4 +87,10 @@ class MapperImpl @Inject constructor(): Mapper {
             status = entity.status.toTrackingStatus()
         )
 
+    override fun toLocation(frameworkLocation: android.location.Location): Location =
+        Location(
+            latitude = frameworkLocation.latitude,
+            longitude = frameworkLocation.longitude,
+            timestamp = frameworkLocation.time
+        )
 }
