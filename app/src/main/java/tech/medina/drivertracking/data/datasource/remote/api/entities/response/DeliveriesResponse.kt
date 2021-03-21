@@ -2,8 +2,8 @@ package tech.medina.drivertracking.data.datasource.remote.api.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class DeliveriesRemote(
-    val deliveries: Array<Delivery>
+data class DeliveriesResponse(
+    val deliveries: Array<DeliveryRemote>
 ) {
 
     //This declaration is necessary to provide mocks of this class by extensions in the tests
@@ -13,7 +13,7 @@ data class DeliveriesRemote(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as DeliveriesRemote
+        other as DeliveriesResponse
 
         if (!deliveries.contentEquals(other.deliveries)) return false
 
@@ -25,8 +25,8 @@ data class DeliveriesRemote(
     }
 }
 
-data class DeliveryRemote(
-    val delivery: Array<Delivery>
+data class DeliveryResponse(
+    val delivery: Array<DeliveryRemote>
 ) {
 
     //This declaration is necessary to provide mocks of this class by extensions in the tests
@@ -36,7 +36,7 @@ data class DeliveryRemote(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as DeliveryRemote
+        other as DeliveryResponse
 
         if (!delivery.contentEquals(other.delivery)) return false
 
@@ -48,13 +48,15 @@ data class DeliveryRemote(
     }
 }
 
-data class Delivery(
+data class DeliveryRemote(
     val id: Long,
     val address: String,
     val latitude: Double,
     val longitude: Double,
     @SerializedName("customer_name")
     val customerName: String,
+    @SerializedName("requires_signature")
     val requiresSignature: Boolean?,
+    @SerializedName("special_instructions")
     val specialInstructions: String?
 )

@@ -2,17 +2,17 @@ package tech.medina.drivertracking.data.utils
 
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
-import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesResponse
+import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingRequest
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
 import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.domain.model.DeliveryStatus
 import tech.medina.drivertracking.domain.model.Tracking
 import tech.medina.drivertracking.domain.model.TrackingStatus
 
-fun DeliveriesRemote.Companion.mock(isFull: Boolean = false): DeliveriesRemote =
-    DeliveriesRemote(arrayOf(
-        DeliveriesRemote.Delivery(
+fun DeliveriesResponse.Companion.mock(isFull: Boolean = false): DeliveriesResponse =
+    DeliveriesResponse(arrayOf(
+        DeliveriesResponse.Delivery(
             id = 123,
             address = "Mocked Address",
             latitude = 42.0,
@@ -23,11 +23,11 @@ fun DeliveriesRemote.Companion.mock(isFull: Boolean = false): DeliveriesRemote =
         )
     ))
 
-fun TrackingRemote.Companion.mock(): TrackingRemote =
-    TrackingRemote(
+fun TrackingRequest.Companion.mock(): TrackingRequest =
+    TrackingRequest(
         driverId = 123,
         list = listOf(
-            TrackingRemote.TrackingData(42.0, 2.0, 123, 80, 123456)
+            TrackingRequest.TrackingData(42.0, 2.0, 123, 80, 123456)
         ))
 
 fun DeliveryLocal.Companion.mock(status: Int = 0, isFull: Boolean = false): DeliveryLocal =

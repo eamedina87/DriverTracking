@@ -2,4 +2,20 @@
     <string name="app_name">DriverTracking</string>
     <string name="title_item_detail">Delivery Detail</string>
     <string name="deliveries_empty">No deliveries were found</string>
+    <string name="delivery_customer_name">Customer Name: %s</string>
+    <string name="delivery_address">Address: %s</string>
+    <string name="delivery_requires_signature">Requires signature: %s</string>
+    <string name="delivery_requires_signature_yes">Yes</string>
+    <string name="delivery_requires_signature_no">No</string>
+    <string name="delivery_special_instructions">Special Instructions: %s</string>
+    <string name="delivery_button_activate">Make active</string>
+    <string name="delivery_button_finish">Finish</string>
+    <string name="delivery_button_complete">Complete</string>
+    <string name="delivery_action_error_incorrect_state">No Action could be taken. Please retry</string>
+    <string name="delivery_action_error_completed">Delivery has already been completed</string>
+    <string name="location_permission_denied">No tracking actions can be done without permissions..</string>
+    <string name="snackbar_dismiss">Dismiss</string>
+    <string name="location_permission_rationale">Please provide access to the device location.</string>
+    <string name="location_permission_rationale_approve">Approve</string>
+    <string name="location_permission_rationale_deny">Deny</string>
 </resources>

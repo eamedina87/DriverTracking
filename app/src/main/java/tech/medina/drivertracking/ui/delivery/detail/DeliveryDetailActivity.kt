@@ -1,51 +1,49 @@
 package tech.medina.drivertracking.ui.delivery.detail
 
-import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
+import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModel
 import tech.medina.drivertracking.R
-import tech.medina.drivertracking.ui.delivery.list.DeliveryListActivity
+import tech.medina.drivertracking.databinding.ActivityItemDetailBinding
+import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.ui.base.BaseActivity
 
-class DeliveryDetailActivity : AppCompatActivity() {
+class DeliveryDetailActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item_detail)
-        setSupportActionBar(findViewById(R.id.detail_toolbar))
+    override val viewModel: ViewModel? = null
+    private lateinit var binding: ActivityItemDetailBinding
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+    override fun getBindingRoot(): View {
+        binding = ActivityItemDetailBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        // Show the Up button in the action bar.
+    override fun initView(savedInstanceState: Bundle?) {
+        setSupportActionBar(binding.detailToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         if (savedInstanceState == null) {
-
-            val fragment = DeliveryDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(
-                        "DeliveryDetailFragment.ARG_ITEM_ID",
-                            intent.getStringExtra("DeliveryDetailFragment.ARG_ITEM_ID"))
-                }
-            }
-
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
-                    .commit()
+            addFragment(
+                R.id.item_detail_container,
+                DeliveryDetailFragment.createWithExtras(intent.extras ?: bundleOf()) {
+                    setTitleForDelivery(it)
+                },
+                "delivery.detail"
+            )
         }
     }
 
+    private fun setTitleForDelivery(delivery: Delivery) {
+        binding.toolbarLayout.title = delivery.customerName
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> {
-                    navigateUpTo(Intent(this, DeliveryListActivity::class.java))
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
             }
+            else -> super.onOptionsItemSelected(item)
+        }
 }

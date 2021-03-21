@@ -1,14 +1,18 @@
 package tech.medina.drivertracking.ui.base
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.Nullable
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import tech.medina.drivertracking.R
 import tech.medina.drivertracking.ui.navigation.Navigator
 import javax.inject.Inject
 
@@ -41,6 +45,23 @@ abstract class BaseFragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    protected fun showSnackbar(message:String,
+                               actionText: Array<String>? = null,
+                               actionClick: Array<View.OnClickListener>? = null) {
+        Snackbar.make(requireContext(), requireView(), message, Snackbar.LENGTH_INDEFINITE).apply {
+            actionText?.let { texts ->
+                texts.forEachIndexed { index, text ->
+                    try {
+                        this.setAction(text, actionClick!![index])
+                    } catch (e: Exception) {
+                        this.setAction(text) { }
+                    }
+                }
+            }
+            show()
+        }
+    }
+
     protected fun onError(error: Any? = null) {
         showMessage(error.toString())
     }
@@ -51,6 +72,16 @@ abstract class BaseFragment : Fragment() {
 
     protected fun hideLoader() {
         baseActivity.hideLoader()
+    }
+
+    protected fun hasPermissions(permissionList: Array<String>): Boolean {
+        var hasPermissions = true
+        permissionList.forEach {
+            if (ContextCompat.checkSelfPermission(baseActivity, it) !=
+                PackageManager.PERMISSION_GRANTED)
+                hasPermissions = false
+        }
+        return hasPermissions
     }
 
     protected fun finish() {

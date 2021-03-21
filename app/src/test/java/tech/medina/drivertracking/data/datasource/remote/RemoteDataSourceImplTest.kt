@@ -8,8 +8,8 @@ import org.junit.Test
 import tech.medina.drivertracking.base.BaseTest
 import tech.medina.drivertracking.data.datasource.remote.api.DeliveryService
 import tech.medina.drivertracking.data.datasource.remote.api.TrackingService
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
-import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesResponse
+import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingRequest
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
 import tech.medina.drivertracking.data.utils.mock
 
@@ -17,8 +17,8 @@ import tech.medina.drivertracking.data.utils.mock
 class RemoteDataSourceImplTest: BaseTest() {
 
     private val deliveryService = mockk<DeliveryService>() {
-        coEvery { getDeliveryList() } returns DeliveriesRemote.mock()
-        coEvery { getDeliveryDetailForId(any()) } returns DeliveriesRemote.mock(true)
+        coEvery { getDeliveryList() } returns DeliveriesResponse.mock()
+        coEvery { getDeliveryDetailForId(any()) } returns DeliveriesResponse.mock(true)
     }
 
     private val trackingService = mockk<TrackingService>() {
@@ -66,7 +66,7 @@ class RemoteDataSourceImplTest: BaseTest() {
 
     @Test
     fun `postTracking from trackingService successfully`() = dispatcher.runBlockingTest {
-        with(remoteDataSource.postTracking(TrackingRemote.mock())) {
+        with(remoteDataSource.postTracking(TrackingRequest.mock())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.status).isEqualTo("ok")
         }

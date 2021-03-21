@@ -1,8 +1,8 @@
-package tech.medina.drivertracking.data.datasource.remote.api.entities
+package tech.medina.drivertracking.data.datasource.remote.api.entities.request
 
 import com.google.gson.annotations.SerializedName
 
-data class TrackingRemote(
+data class TrackingRequest(
     @SerializedName("driver_id")
     val driverId: Long,
     @SerializedName("tracking_data")

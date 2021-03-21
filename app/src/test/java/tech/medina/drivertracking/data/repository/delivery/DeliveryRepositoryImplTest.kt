@@ -9,7 +9,7 @@ import tech.medina.drivertracking.base.BaseTest
 import tech.medina.drivertracking.data.datasource.local.LocalDataSource
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesResponse
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
 import tech.medina.drivertracking.data.utils.mock
 import tech.medina.drivertracking.domain.model.Delivery
@@ -29,8 +29,8 @@ class DeliveryRepositoryImplTest : BaseTest() {
     }
 
     private val remoteDataSource = mockk<RemoteDataSource> {
-        coEvery { getDeliveryList() } returns DeliveriesRemote.mock()
-        coEvery { getDeliveryDetailForId(any()) } returns DeliveriesRemote.mock(isFull = true).deliveries.first()
+        coEvery { getDeliveryList() } returns DeliveriesResponse.mock()
+        coEvery { getDeliveryDetailForId(any()) } returns DeliveriesResponse.mock(isFull = true).deliveries.first()
         coEvery { postTracking(any()) } returns TrackingResponse.mock()
     }
 

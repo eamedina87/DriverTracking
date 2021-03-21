@@ -3,14 +3,14 @@ package tech.medina.drivertracking.data.mapper
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
 import tech.medina.drivertracking.data.datasource.location.entity.Location
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
-import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingRequest
 import tech.medina.drivertracking.domain.model.*
 import javax.inject.Inject
 
 class MapperImpl @Inject constructor(): Mapper {
 
-    override fun toLocal(entity: DeliveriesRemote.Delivery, timestamp: Long): DeliveryLocal =
+    override fun toLocal(entity: DeliveryRemote, timestamp: Long): DeliveryLocal =
         DeliveryLocal(
             id = entity.id,
             address = entity.address,
@@ -19,12 +19,12 @@ class MapperImpl @Inject constructor(): Mapper {
             customerName = entity.customerName,
             status = DeliveryStatus.DEFAULT.ordinal,
             fetchTimestamp = timestamp,
-            requiresSignature = entity.requiresSignature ?: false,
-            specialInstructions = entity.specialInstructions ?: ""
+            requiresSignature = entity.requiresSignature,
+            specialInstructions = entity.specialInstructions
         )
 
-    override fun toRemote(model: Tracking): TrackingRemote.TrackingData =
-        TrackingRemote.TrackingData(
+    override fun toRemote(model: Tracking): TrackingRequest.TrackingData =
+        TrackingRequest.TrackingData(
             latitude = model.latitude,
             longitude = model.longitude,
             deliveryId = model.deliveryId,
@@ -32,11 +32,11 @@ class MapperImpl @Inject constructor(): Mapper {
             timestamp = model.timestamp
         )
 
-    override fun toRemote(list: List<Tracking>, driverId: Long): TrackingRemote {
+    override fun toRemote(list: List<Tracking>, driverId: Long): TrackingRequest {
         val data = list.map {
             toRemote(it)
         }
-        return TrackingRemote(driverId, data)
+        return TrackingRequest(driverId, data)
     }
 
     override fun toModel(entity: DeliveryLocal): Delivery =
