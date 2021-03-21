@@ -8,7 +8,7 @@ import org.junit.Test
 import tech.medina.drivertracking.base.BaseTest
 import tech.medina.drivertracking.data.datasource.remote.api.DeliveryService
 import tech.medina.drivertracking.data.datasource.remote.api.TrackingService
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
 import tech.medina.drivertracking.data.utils.mock
@@ -17,8 +17,8 @@ import tech.medina.drivertracking.data.utils.mock
 class RemoteDataSourceImplTest: BaseTest() {
 
     private val deliveryService = mockk<DeliveryService>() {
-        coEvery { getDeliveryList() } returns DeliveryRemote.mock()
-        coEvery { getDeliveryDetailForId(any()) } returns DeliveryRemote.mock(true)
+        coEvery { getDeliveryList() } returns DeliveriesRemote.mock()
+        coEvery { getDeliveryDetailForId(any()) } returns DeliveriesRemote.mock(true)
     }
 
     private val trackingService = mockk<TrackingService>() {

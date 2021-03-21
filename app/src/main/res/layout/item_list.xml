@@ -21,6 +21,6 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.delivery.list.DeliveryListActivity"
-        tools:listitem="@layout/item_list_content" />
+        tools:listitem="@layout/item_delivery" />
 
 </LinearLayout>

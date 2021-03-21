@@ -2,7 +2,7 @@ package tech.medina.drivertracking.data.utils
 
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
 import tech.medina.drivertracking.domain.model.Delivery
@@ -10,9 +10,9 @@ import tech.medina.drivertracking.domain.model.DeliveryStatus
 import tech.medina.drivertracking.domain.model.Tracking
 import tech.medina.drivertracking.domain.model.TrackingStatus
 
-fun DeliveryRemote.Companion.mock(isFull: Boolean = false): DeliveryRemote =
-    DeliveryRemote(arrayOf(
-        DeliveryRemote.Delivery(
+fun DeliveriesRemote.Companion.mock(isFull: Boolean = false): DeliveriesRemote =
+    DeliveriesRemote(arrayOf(
+        DeliveriesRemote.Delivery(
             id = 123,
             address = "Mocked Address",
             latitude = 42.0,

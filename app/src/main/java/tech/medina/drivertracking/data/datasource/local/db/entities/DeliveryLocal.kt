@@ -10,11 +10,12 @@ data class DeliveryLocal(
     val latitude: Double,
     val longitude: Double,
     val customerName: String,
-    val status: Int,
+    var status: Int,
     val fetchTimestamp: Long,
-    val requiresSignature: Boolean?,
-    val specialInstructions: String?
+    var requiresSignature: Boolean?,
+    var specialInstructions: String?
 ) {
+
     fun isComplete(): Boolean {
         return requiresSignature != null && specialInstructions != null
     }

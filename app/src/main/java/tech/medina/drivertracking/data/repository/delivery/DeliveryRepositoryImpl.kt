@@ -39,11 +39,12 @@ class DeliveryRepositoryImpl @Inject constructor(
      * If it is complete (has all information) returns from local, else updates from remote
      ***/
     override suspend fun getDeliveryDetailForId(id: Long): Delivery {
-        var localData = localDataSource.getDeliveryWithId(id)
+        val localData = localDataSource.getDeliveryWithId(id)
         if (!localData.isComplete()) {
             val remoteData = remoteDataSource.getDeliveryDetailForId(id)
-            localData = mapper.toLocal(remoteData, System.currentTimeMillis())
-            localDataSource.saveDelivery(localData)
+            localData.requiresSignature = remoteData.requiresSignature
+            localData.specialInstructions = remoteData.specialInstructions
+            localDataSource.updateDelivery(localData)
         }
         return mapper.toModel(localData)
     }

@@ -25,7 +25,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="tech.medina.drivertracking.ui.delivery.list.DeliveryListActivity"
-        tools:listitem="@layout/item_list_content" />
+        tools:listitem="@layout/item_delivery" />
 
     <FrameLayout
         android:id="@+id/item_detail_container"

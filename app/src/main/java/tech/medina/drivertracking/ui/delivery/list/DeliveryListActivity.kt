@@ -79,6 +79,7 @@ class DeliveryListActivity : BaseActivity() {
     }
 
     private fun onDeliverySelected(delivery: Delivery) {
+        navigator.goToDetail(this, delivery.id, R.id.item_detail_container)
         showMessage("Selected: ${delivery.customerName}")
     }
 

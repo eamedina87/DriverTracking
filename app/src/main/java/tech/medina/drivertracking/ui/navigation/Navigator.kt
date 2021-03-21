@@ -55,15 +55,15 @@ class Navigator @Inject constructor() {
         show(activity.supportFragmentManager, "twoOptionsDialog")*/
     }
 
-    fun goToDetail(source: BaseActivity, habitatgeId: String, containerId: Int) {
+    fun goToDetail(source: BaseActivity, deliveryId: Long, containerId: Int) {
         val extras = Bundle().apply {
-            putString(INTENT_EXTRA_DELIVERY_ID, habitatgeId)
+            putLong(INTENT_EXTRA_DELIVERY_ID, deliveryId)
         }
         if (Utils.isTablet(source)) {
             source.replaceFragment(
                 containerViewId = containerId,
                 fragment = DeliveryDetailFragment.createWithExtras(extras),
-                tag = "habitatge.detail")
+                tag = "delivery.detail")
         } else {
             goToActivity(
                 source = source,

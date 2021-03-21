@@ -3,14 +3,14 @@ package tech.medina.drivertracking.data.mapper
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
 import tech.medina.drivertracking.data.datasource.location.entity.Location
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.TrackingRemote
 import tech.medina.drivertracking.domain.model.*
 import javax.inject.Inject
 
 class MapperImpl @Inject constructor(): Mapper {
 
-    override fun toLocal(entity: DeliveryRemote.Delivery, timestamp: Long): DeliveryLocal =
+    override fun toLocal(entity: DeliveriesRemote.Delivery, timestamp: Long): DeliveryLocal =
         DeliveryLocal(
             id = entity.id,
             address = entity.address,

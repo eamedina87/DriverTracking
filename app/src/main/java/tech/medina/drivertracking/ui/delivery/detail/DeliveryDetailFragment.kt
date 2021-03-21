@@ -1,13 +1,19 @@
 package tech.medina.drivertracking.ui.delivery.detail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import tech.medina.drivertracking.R
+import androidx.fragment.app.viewModels
+import tech.medina.drivertracking.databinding.FragmentItemDetailBinding
+import tech.medina.drivertracking.domain.model.DataState
+import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.ui.base.BaseFragment
+import tech.medina.drivertracking.ui.delivery.DeliveryViewModel
+import tech.medina.drivertracking.ui.utils.Constants
+import tech.medina.drivertracking.ui.utils.getExtra
 
-class DeliveryDetailFragment : Fragment() {
+class DeliveryDetailFragment : BaseFragment() {
 
     companion object {
 
@@ -19,15 +25,41 @@ class DeliveryDetailFragment : Fragment() {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var binding: FragmentItemDetailBinding
+    override val viewModel: DeliveryViewModel by viewModels()
 
+    override fun getBindingRoot(inflater: LayoutInflater, container: ViewGroup?): View {
+        binding = FragmentItemDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.item_delivery, container, false)
-        return rootView
+    override fun initView(savedInstanceState: Bundle?) {
+        initObservers()
+        arguments.getExtra<Long>(Constants.INTENT_EXTRA_DELIVERY_ID) {
+            viewModel.getDeliveryDetailWithId(it)
+        }
+    }
+
+    private fun initObservers() {
+        viewModel.deliveryDetailState.observe(this) {
+            it?.let { state ->
+                when (state) {
+                    is DataState.Loading -> showLoader()
+                    is DataState.Success -> {
+                        hideLoader()
+                        onDeliveryDetailSuccess(state.result)
+                    }
+                    is DataState.Error -> {
+                        hideLoader()
+                        onError(state.error)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onDeliveryDetailSuccess(delivery: Delivery) {
+        showMessage("Delivery Detail Success")
     }
 
 }
