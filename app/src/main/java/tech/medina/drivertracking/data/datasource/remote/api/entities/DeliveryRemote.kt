@@ -3,7 +3,7 @@ package tech.medina.drivertracking.data.datasource.remote.api.entities
 import com.google.gson.annotations.SerializedName
 
 data class DeliveryRemote(
-    val delivery: Array<Delivery>
+    val deliveries: Array<Delivery>
 ) {
 
     //This declaration is necessary to provide mocks of this class by extensions in the tests
@@ -26,12 +26,12 @@ data class DeliveryRemote(
 
         other as DeliveryRemote
 
-        if (!delivery.contentEquals(other.delivery)) return false
+        if (!deliveries.contentEquals(other.deliveries)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return delivery.contentHashCode()
+        return deliveries.contentHashCode()
     }
 }

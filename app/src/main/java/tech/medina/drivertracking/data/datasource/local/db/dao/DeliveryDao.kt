@@ -1,15 +1,12 @@
 package tech.medina.drivertracking.data.datasource.local.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 
 @Dao
 interface DeliveryDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg delivery: DeliveryLocal): List<Long>
 
     @Update

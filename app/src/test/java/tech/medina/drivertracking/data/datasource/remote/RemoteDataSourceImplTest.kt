@@ -31,8 +31,8 @@ class RemoteDataSourceImplTest: BaseTest() {
     fun `getDeliveryList from deliveryService successfully`() = dispatcher.runBlockingTest {
         with(remoteDataSource.getDeliveryList()) {
             Truth.assertThat(this).isNotNull()
-            Truth.assertThat(this.delivery).isNotNull()
-            val first = this.delivery.first()
+            Truth.assertThat(this.deliveries).isNotNull()
+            val first = this.deliveries.first()
             Truth.assertThat(first).isNotNull()
             Truth.assertThat(first.customerName).isNotNull()
             Truth.assertThat(first.requiresSignature).isNull()

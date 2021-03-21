@@ -6,6 +6,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        drivertracking {
+            storeFile file('../driver-tracking.keys')
+            storePassword 'drivertracking.2021'
+            keyAlias 'drivertracking'
+            keyPassword 'drivertracking.2021'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
@@ -25,6 +33,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.drivertracking
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "API_BASE_URL", project.property('API_BASE_URL_REMOTE')
             manifestPlaceholders = [apiUrl: project.property('API_BASE_URL_REMOTE')]

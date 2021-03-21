@@ -12,7 +12,7 @@ class MapperImpl @Inject constructor(): Mapper {
 
     override fun toLocal(entity: DeliveryRemote.Delivery, timestamp: Long): DeliveryLocal =
         DeliveryLocal(
-            id = -1,
+            id = entity.id,
             address = entity.address,
             latitude = entity.latitude,
             longitude = entity.longitude,
@@ -67,7 +67,7 @@ class MapperImpl @Inject constructor(): Mapper {
 
     override fun toLocal(model: Tracking): TrackingLocal =
         TrackingLocal(
-            id = -1,
+            id = 0,
             latitude = model.latitude,
             longitude = model.longitude,
             deliveryId = model.deliveryId,

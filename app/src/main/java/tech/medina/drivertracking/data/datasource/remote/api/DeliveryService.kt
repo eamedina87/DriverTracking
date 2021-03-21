@@ -5,7 +5,7 @@ import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRe
 
 interface DeliveryService {
 
-    @GET
+    @GET("deliveries")
     suspend fun getDeliveryList(): DeliveryRemote
 
     @GET

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DriverTracking</string>
     <string name="title_item_detail">Delivery Detail</string>
+    <string name="deliveries_empty">No deliveries were found</string>
 </resources>

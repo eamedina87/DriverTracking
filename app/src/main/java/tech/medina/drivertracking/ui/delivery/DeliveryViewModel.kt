@@ -1,9 +1,6 @@
 package tech.medina.drivertracking.ui.delivery
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -16,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DeliveryViewModel @Inject constructor(
+    state: SavedStateHandle,
     private val dispatcher: CoroutineDispatcher,
     private val getDeliveriesUseCase: GetDeliveriesUseCase,
     private val getDeliveryDetailUseCase: GetDeliveryDetailUseCase
@@ -27,10 +25,11 @@ class DeliveryViewModel @Inject constructor(
     private val _deliveryDetailState: MutableLiveData<DataState<Delivery>> = MutableLiveData()
     val deliveryDetailState: LiveData<DataState<Delivery>> get() = _deliveryDetailState
 
-    fun getDeliveryList() = viewModelScope.launch {
+    fun getDeliveryList(forceUpdate: Boolean = false) = viewModelScope.launch {
+        _deliveryListState.value = DataState.Loading
         _deliveryListState.value = try {
             withContext(dispatcher) {
-                DataState.Success(getDeliveriesUseCase())
+                DataState.Success(getDeliveriesUseCase(forceUpdate = forceUpdate))
             }
         } catch(e: Exception) {
             DataState.Error(e)
@@ -38,6 +37,7 @@ class DeliveryViewModel @Inject constructor(
     }
 
     fun getDeliveryDetailWithId(id: Long) = viewModelScope.launch {
+        _deliveryDetailState.value = DataState.Loading
         _deliveryDetailState.value = try {
             withContext(dispatcher) {
                 DataState.Success(getDeliveryDetailUseCase(id))

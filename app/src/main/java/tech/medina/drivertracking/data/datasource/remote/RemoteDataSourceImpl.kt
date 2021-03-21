@@ -15,7 +15,7 @@ class RemoteDataSourceImpl @Inject constructor(
         deliveryService.getDeliveryList()
 
     override suspend fun getDeliveryDetailForId(id: Long): DeliveryRemote.Delivery =
-        deliveryService.getDeliveryDetailForId(id).delivery.first()
+        deliveryService.getDeliveryDetailForId(id).deliveries.first()
 
     override suspend fun postTracking(tracking: TrackingRemote) =
         trackingService.postTracking(tracking)

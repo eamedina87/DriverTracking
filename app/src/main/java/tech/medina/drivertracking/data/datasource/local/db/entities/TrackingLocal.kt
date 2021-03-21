@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "tracking")
 data class TrackingLocal(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey (autoGenerate = true) val id: Long,
     val latitude: Double,
     val longitude: Double,
     val deliveryId: Long,

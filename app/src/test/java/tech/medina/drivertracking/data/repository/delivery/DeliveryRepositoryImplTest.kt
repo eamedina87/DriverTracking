@@ -30,7 +30,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
 
     private val remoteDataSource = mockk<RemoteDataSource> {
         coEvery { getDeliveryList() } returns DeliveryRemote.mock()
-        coEvery { getDeliveryDetailForId(any()) } returns DeliveryRemote.mock(isFull = true).delivery.first()
+        coEvery { getDeliveryDetailForId(any()) } returns DeliveryRemote.mock(isFull = true).deliveries.first()
         coEvery { postTracking(any()) } returns TrackingResponse.mock()
     }
 

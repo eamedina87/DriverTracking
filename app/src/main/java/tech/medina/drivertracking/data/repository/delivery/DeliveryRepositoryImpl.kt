@@ -23,7 +23,7 @@ class DeliveryRepositoryImpl @Inject constructor(
         var localList = localDataSource.getDeliveryList()
         if (forceUpdate || localList.isEmpty()) {
             val timestamp = System.currentTimeMillis()
-            val localData: List<DeliveryLocal> = remoteDataSource.getDeliveryList().delivery.map {
+            val localData: List<DeliveryLocal> = remoteDataSource.getDeliveryList().deliveries.map {
                 mapper.toLocal(it, timestamp)
             }
             localDataSource.saveDelivery(* localData.toTypedArray())
