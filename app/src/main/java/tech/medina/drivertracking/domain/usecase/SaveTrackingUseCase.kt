@@ -10,5 +10,5 @@ class SaveTrackingUseCase @Inject constructor(
 
     suspend operator fun invoke(vararg data: Tracking): Boolean =
         trackingRepository.saveTrackingData(* data)
-    
+
 }

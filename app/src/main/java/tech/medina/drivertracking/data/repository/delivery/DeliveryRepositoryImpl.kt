@@ -6,7 +6,9 @@ import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
 import tech.medina.drivertracking.data.mapper.Mapper
 import tech.medina.drivertracking.domain.model.Delivery
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class DeliveryRepositoryImpl @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
