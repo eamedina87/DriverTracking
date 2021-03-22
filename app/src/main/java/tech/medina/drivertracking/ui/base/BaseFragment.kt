@@ -46,17 +46,11 @@ abstract class BaseFragment : Fragment() {
     }
 
     protected fun showSnackbar(message:String,
-                               actionText: Array<String>? = null,
-                               actionClick: Array<View.OnClickListener>? = null) {
+                               actionText: String? = null,
+                               actionClick: View.OnClickListener? = null) {
         Snackbar.make(requireContext(), requireView(), message, Snackbar.LENGTH_INDEFINITE).apply {
-            actionText?.let { texts ->
-                texts.forEachIndexed { index, text ->
-                    try {
-                        this.setAction(text, actionClick!![index])
-                    } catch (e: Exception) {
-                        this.setAction(text) { }
-                    }
-                }
+            actionText?.let {
+                this.setAction(it, actionClick)
             }
             show()
         }

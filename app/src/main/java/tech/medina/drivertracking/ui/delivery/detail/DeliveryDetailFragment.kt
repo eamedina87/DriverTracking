@@ -12,8 +12,10 @@ import tech.medina.drivertracking.domain.model.*
 import tech.medina.drivertracking.ui.base.BaseFragment
 import tech.medina.drivertracking.ui.delivery.DeliveryViewModel
 import tech.medina.drivertracking.ui.utils.Constants
+import tech.medina.drivertracking.ui.utils.Constants.BACKGROUND_LOCATION_PERMISSION
 import tech.medina.drivertracking.ui.utils.Constants.LOCATION_PERMISSION
 import tech.medina.drivertracking.ui.utils.Utils
+import tech.medina.drivertracking.ui.utils.Utils.isAndroidQOrHigher
 import tech.medina.drivertracking.ui.utils.getExtra
 import tech.medina.drivertracking.ui.utils.toYesOrNo
 
@@ -34,11 +36,11 @@ class DeliveryDetailFragment : BaseFragment() {
     private lateinit var binding: FragmentItemDetailBinding
     override val viewModel: DeliveryViewModel by viewModels()
 
-    private val requestLocationPermission by lazy {
+    private val requestLocationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             managePermissionResult(isGranted)
         }
-    }
+
 
     override fun getBindingRoot(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = FragmentItemDetailBinding.inflate(inflater, container, false)
@@ -84,6 +86,7 @@ class DeliveryDetailFragment : BaseFragment() {
         binding.specialInstructions.text = getString(R.string.delivery_special_instructions,
             delivery.specialInstructions)
         binding.button.apply {
+            visibility = View.VISIBLE
             text = delivery.status.toButtonString(requireContext())
             isEnabled = delivery.status.toButtonEnable()
             setOnClickListener(onButtonClicked)
@@ -95,39 +98,35 @@ class DeliveryDetailFragment : BaseFragment() {
     }
 
     private fun checkPermissions() {
-        if(hasPermissions(arrayOf(LOCATION_PERMISSION))){
-            performActionOnDelivery()
-        } else {
-            askPermissions()
+        when {
+            !hasPermissions(arrayOf(LOCATION_PERMISSION)) -> askPermission(LOCATION_PERMISSION)
+            isAndroidQOrHigher() && !hasPermissions(arrayOf(BACKGROUND_LOCATION_PERMISSION)) -> askPermission(BACKGROUND_LOCATION_PERMISSION)
+            else -> performActionOnDelivery()
         }
     }
 
-    private fun askPermissions() {
-        if (shouldShowRequestPermissionRationale(LOCATION_PERMISSION)) {
-            val options = arrayOf(
-                getString(R.string.location_permission_rationale_approve),
-                getString(R.string.location_permission_rationale_deny)
-            )
-            val actions = arrayOf(
-                View.OnClickListener { askPermissions() },
-                View.OnClickListener { managePermissionResult(false) }
-            )
-            showSnackbar(getString(R.string.location_permission_rationale), options, actions)
+    private fun askPermission(permisssion: String) {
+        if (shouldShowRequestPermissionRationale(permisssion)) {
+            //showSnackbar(getString(R.string.location_permission_rationale))
+            requestLocationPermission.launch(permisssion)
+            //todo show dialogs
         } else {
-            requestLocationPermission.launch(LOCATION_PERMISSION)
+            requestLocationPermission.launch(permisssion)
         }
     }
 
     private fun managePermissionResult(granted: Boolean) {
         if (granted) {
-            performActionOnDelivery()
+            checkPermissions()
         } else {
             showSnackbar(getString(R.string.location_permission_denied))
+            //todo show dialogs
         }
     }
 
     private fun performActionOnDelivery() {
         viewModel.performActionOnDeliveryDetail()
+        showMessage("perform Action")
     }
 
 }

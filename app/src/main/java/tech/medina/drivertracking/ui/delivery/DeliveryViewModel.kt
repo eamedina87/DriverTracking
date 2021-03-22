@@ -1,6 +1,7 @@
 package tech.medina.drivertracking.ui.delivery
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -13,6 +14,7 @@ import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.domain.model.DeliveryStatus
 import tech.medina.drivertracking.domain.usecase.GetDeliveriesUseCase
 import tech.medina.drivertracking.domain.usecase.GetDeliveryDetailUseCase
+import tech.medina.drivertracking.ui.utils.Constants.LOG_TAG_APP
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,13 +70,12 @@ class DeliveryViewModel @Inject constructor(
                 _deliveryActionState.value = DataState.Error(context.getString(R.string.delivery_action_error_incorrect_state))
             }
             detailState as DataState.Success
-            val delivery = detailState.result
-            when(delivery.status) {
+            when(detailState.result.status) {
                 DeliveryStatus.DEFAULT -> { //todo must activate
-
+                    Log.d(LOG_TAG_APP, "performActionOnDeliveryDetail -> must activate")
                 }
                 DeliveryStatus.ACTIVE -> { //todo must stop
-
+                    Log.d(LOG_TAG_APP, "performActionOnDeliveryDetail -> must stop")
                 }
                 DeliveryStatus.COMPLETED ->
                     _deliveryActionState.value = DataState.Error(context.getString(R.string.delivery_action_error_completed))
