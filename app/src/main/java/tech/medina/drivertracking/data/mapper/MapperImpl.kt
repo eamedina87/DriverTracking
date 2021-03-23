@@ -4,6 +4,7 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLoca
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
 import tech.medina.drivertracking.data.datasource.location.entity.Location
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
+import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingData
 import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingRequest
 import tech.medina.drivertracking.domain.model.*
 import javax.inject.Inject
@@ -23,8 +24,8 @@ class MapperImpl @Inject constructor(): Mapper {
             specialInstructions = entity.specialInstructions
         )
 
-    override fun toRemote(model: Tracking): TrackingRequest.TrackingData =
-        TrackingRequest.TrackingData(
+    override fun toRemote(model: Tracking): TrackingData =
+        TrackingData(
             latitude = model.latitude,
             longitude = model.longitude,
             deliveryId = model.deliveryId,
@@ -32,9 +33,9 @@ class MapperImpl @Inject constructor(): Mapper {
             timestamp = model.timestamp
         )
 
-    override fun toRemote(list: List<Tracking>, driverId: Long): TrackingRequest {
-        val data = list.map {
-            toRemote(it)
+    override fun toRemote(tracking: List<Tracking>, driverId: Long): TrackingRequest {
+        val data: List<TrackingData> = tracking.flatMap {
+            listOf(toRemote(it))
         }
         return TrackingRequest(driverId, data)
     }

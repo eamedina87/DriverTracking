@@ -25,7 +25,7 @@ class LocalDataSourceImplTest : BaseTest() {
         coEvery { trackingDao().update(any()) } returns 1
         coEvery { trackingDao().delete(any()) } returns 1
         coEvery { trackingDao().getAll() } returns listOf(TrackingLocal.mock())
-        coEvery { trackingDao().getAllWithStatusNot(any()) } returns listOf(TrackingLocal.mock())
+        coEvery { trackingDao().getAllWithStatus(any()) } returns listOf(TrackingLocal.mock())
     }
 
     private val localDataSource = LocalDataSourceImpl(database)
@@ -105,12 +105,12 @@ class LocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun getAllTrackingWithStatus() = dispatcher.runBlockingTest {
-        with(localDataSource.getAllTrackingWithStatusNot(0)) {
+        with(localDataSource.getAllTrackingWithStatus(0)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isNotEmpty()
             Truth.assertThat(this.first().status).isEqualTo(0)
         }
-        coVerifySequence { database.trackingDao().getAllWithStatusNot(any()) }
+        coVerifySequence { database.trackingDao().getAllWithStatus(any()) }
     }
 
 }

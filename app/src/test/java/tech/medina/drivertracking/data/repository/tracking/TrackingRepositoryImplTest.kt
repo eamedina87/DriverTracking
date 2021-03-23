@@ -31,7 +31,7 @@ class TrackingRepositoryImplTest : BaseTest() {
         coEvery { updateTracking(any()) } returns true
         coEvery { deleteTracking(any()) } returns true
         coEvery { getAllTracking() } returns listOf(TrackingLocal.mock())
-        coEvery { getAllTrackingWithStatusNot(any()) } returns listOf(TrackingLocal.mock())
+        coEvery { getAllTrackingWithStatus(any()) } returns listOf(TrackingLocal.mock())
     }
 
     private val remoteDataSource = mockk<RemoteDataSource> {
@@ -75,7 +75,7 @@ class TrackingRepositoryImplTest : BaseTest() {
             Truth.assertThat(this.first().status).isNotEqualTo(TrackingStatus.SENT)
         }
         coVerifySequence{
-            localDataSource.getAllTrackingWithStatusNot(any())
+            localDataSource.getAllTrackingWithStatus(any())
         }
     }
 

@@ -28,13 +28,15 @@ class TrackingRepositoryImpl @Inject constructor(
             predicate(it)
         }
 
-    override suspend fun getUnsentData(): List<Tracking> =
-        localDataSource.getAllTrackingWithStatusNot(TrackingStatus.SENT.ordinal).map {
+    override suspend fun getUnsentData(): List<Tracking> {
+        val data = localDataSource.getAllTrackingWithStatus(TrackingStatus.DEFAULT.ordinal)
+        return data.map {
             mapper.toModel(it)
         }
+    }
 
-    override suspend fun postTrackingData(list: List<Tracking>): Boolean {
-        val data = mapper.toRemote(list, localDataSource.getDriverId())
+    override suspend fun postTrackingData(tracking: List<Tracking>): Boolean {
+        val data = mapper.toRemote(tracking, localDataSource.getDriverId())
         return remoteDataSource.postTracking(data).status == ResponseStatus.OK.status
     }
 

@@ -12,14 +12,17 @@ data class TrackingRequest(
     //This declaration is necessary to provide mocks of this class by extensions in the tests
     companion object {  }
 
-    data class TrackingData(
+}
+
+data class TrackingData(
+        @SerializedName("latitude")
         val latitude: Double,
+        @SerializedName("longitude")
         val longitude: Double,
         @SerializedName("delivery_id")
         val deliveryId: Long,
         @SerializedName("battery_level")
         val batteryLevel: Int,
+        @SerializedName("timestamp")
         val timestamp: Long
-    )
-
-}
+)

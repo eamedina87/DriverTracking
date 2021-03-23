@@ -15,7 +15,7 @@ interface LocalDataSource {
     suspend fun updateTracking(vararg data: TrackingLocal): Boolean
     suspend fun deleteTracking(vararg data: TrackingLocal): Boolean
     suspend fun getAllTracking(): List<TrackingLocal>
-    suspend fun getAllTrackingWithStatusNot(status: Int): List<TrackingLocal>
+    suspend fun getAllTrackingWithStatus(status: Int): List<TrackingLocal>
     fun getDriverId(): Long
 
 

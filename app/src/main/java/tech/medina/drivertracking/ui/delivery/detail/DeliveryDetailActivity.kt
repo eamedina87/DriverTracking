@@ -1,5 +1,6 @@
 package tech.medina.drivertracking.ui.delivery.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -9,6 +10,7 @@ import tech.medina.drivertracking.R
 import tech.medina.drivertracking.databinding.ActivityItemDetailBinding
 import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.ui.base.BaseActivity
+import tech.medina.drivertracking.ui.delivery.list.DeliveryListActivity
 
 class DeliveryDetailActivity : BaseActivity() {
 
@@ -41,7 +43,7 @@ class DeliveryDetailActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                navigateUpTo(Intent(this, DeliveryListActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

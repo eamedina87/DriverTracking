@@ -19,4 +19,10 @@
     <string name="location_permission_rationale">Please provide access to the device location.</string>
     <string name="location_permission_rationale_approve">Approve</string>
     <string name="location_permission_rationale_deny">Deny</string>
+    <string name="notification_title">DriverTracking</string>
+    <string name="notification_message">There is an active delivery</string>
+    <string name="notification_channel_id">drivertrackinglocation</string>
+    <string name="ticker_text">Ticker</string>
+    <string name="notification_channel_description">Handles the location notification</string>
+    <string name="notification_channel_name">Location Notification Channel</string>
 </resources>

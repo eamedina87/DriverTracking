@@ -38,8 +38,8 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun getAllTracking(): List<TrackingLocal> =
         database.trackingDao().getAll()
 
-    override suspend fun getAllTrackingWithStatusNot(status: Int): List<TrackingLocal> =
-        database.trackingDao().getAllWithStatusNot(status)
+    override suspend fun getAllTrackingWithStatus(status: Int): List<TrackingLocal> =
+        database.trackingDao().getAllWithStatus(status)
 
-    override fun getDriverId(): Long = 123
+    override fun getDriverId(): Long = 123L
 }

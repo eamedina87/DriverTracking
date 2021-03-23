@@ -18,7 +18,7 @@ interface TrackingDao {
     @Query("SELECT * FROM tracking")
     suspend fun getAll(): List<TrackingLocal>
 
-    @Query("SELECT * FROM tracking WHERE status!=:status")
-    suspend fun getAllWithStatusNot(status: Int): List<TrackingLocal>
+    @Query("SELECT * FROM tracking WHERE status=:status ORDER BY timestamp ASC LIMIT 10")
+    suspend fun getAllWithStatus(status: Int): List<TrackingLocal>
 
 }
