@@ -12,6 +12,7 @@
     <string name="delivery_button_finish">Finish</string>
     <string name="delivery_button_complete">Complete</string>
     <string name="delivery_action_error_incorrect_state">No Action could be taken. Please retry</string>
+    <string name="delivery_action_error_current_active">There is an active delivery for %s. First you have to complete it.</string>
     <string name="delivery_action_error_completed">Delivery has already been completed</string>
     <string name="location_permission_denied">No tracking actions can be done without permissions..</string>
     <string name="snackbar_dismiss">Dismiss</string>

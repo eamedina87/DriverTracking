@@ -49,9 +49,7 @@ class DeliveryDetailFragment : BaseFragment() {
 
     override fun initView(savedInstanceState: Bundle?) {
         initObservers()
-        arguments.getExtra<Long>(Constants.INTENT_EXTRA_DELIVERY_ID) {
-            viewModel.getDeliveryDetailWithId(it)
-        }
+        fetchDeliveryDetail()
     }
 
     private fun initObservers() {
@@ -69,6 +67,40 @@ class DeliveryDetailFragment : BaseFragment() {
                     }
                 }
             }
+        }
+        viewModel.deliveryActionState.observe(this) {
+            it?.let { state ->
+                when (state) {
+                    is DataState.Loading -> showLoader()
+                    is DataState.Success -> {
+                        hideLoader()
+                        fetchDeliveryDetail()
+                    }
+                    is DataState.Error -> {
+                        hideLoader()
+                        if (state.error is Delivery) {
+                            showOtherDeliveryActiveDialog(state.error)
+                        } else {
+                            onError(state.error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showOtherDeliveryActiveDialog(activeDelivery: Delivery) {
+        showSnackbar(
+            requireContext().getString(R.string.delivery_action_error_current_active, activeDelivery.customerName),
+            requireContext().getString(R.string.delivery_button_complete)
+        ) {
+            performActionOnDelivery(canCancelActiveDelivery = true)
+        }
+    }
+
+    private fun fetchDeliveryDetail() {
+        arguments.getExtra<Long>(Constants.INTENT_EXTRA_DELIVERY_ID) {
+            viewModel.getDeliveryDetailWithId(it)
         }
     }
 
@@ -124,9 +156,8 @@ class DeliveryDetailFragment : BaseFragment() {
         }
     }
 
-    private fun performActionOnDelivery() {
-        viewModel.performActionOnDeliveryDetail()
-        showMessage("perform Action")
+    private fun performActionOnDelivery(canCancelActiveDelivery: Boolean = false) {
+        viewModel.performActionOnDeliveryDetail(canCancelActiveDelivery)
     }
 
 }

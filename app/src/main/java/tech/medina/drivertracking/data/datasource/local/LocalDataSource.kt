@@ -9,6 +9,7 @@ interface LocalDataSource {
     suspend fun updateDelivery(vararg delivery: DeliveryLocal): Boolean
     suspend fun getDeliveryList(): List<DeliveryLocal>
     suspend fun getDeliveryWithId(id: Long): DeliveryLocal
+    suspend fun getDeliveryWithStatus(status: Int): List<DeliveryLocal>
 
     suspend fun saveTracking(vararg data: TrackingLocal): Boolean
     suspend fun updateTracking(vararg data: TrackingLocal): Boolean
@@ -16,5 +17,6 @@ interface LocalDataSource {
     suspend fun getAllTracking(): List<TrackingLocal>
     suspend fun getAllTrackingWithStatusNot(status: Int): List<TrackingLocal>
     fun getDriverId(): Long
+
 
 }

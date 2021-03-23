@@ -12,9 +12,8 @@ import tech.medina.drivertracking.R
 import tech.medina.drivertracking.domain.model.DataState
 import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.domain.model.DeliveryStatus
-import tech.medina.drivertracking.domain.usecase.GetDeliveriesUseCase
-import tech.medina.drivertracking.domain.usecase.GetDeliveryDetailUseCase
-import tech.medina.drivertracking.ui.utils.Constants.LOG_TAG_APP
+import tech.medina.drivertracking.domain.usecase.*
+import tech.medina.drivertracking.ui.tracking.TrackingManager
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +22,10 @@ class DeliveryViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatcher: CoroutineDispatcher,
     private val getDeliveriesUseCase: GetDeliveriesUseCase,
-    private val getDeliveryDetailUseCase: GetDeliveryDetailUseCase
+    private val getDeliveryDetailUseCase: GetDeliveryDetailUseCase,
+    private val getActiveDeliveryUseCase: GetActiveDeliveryUseCase,
+    private val setActiveDeliveryUseCase: SetActiveDeliveryUseCase,
+    private val setCompleteDeliveryUseCase: SetCompleteDeliveryUseCase
 ) : ViewModel() {
 
     private val _deliveryListState: MutableLiveData<DataState<List<Delivery>>> = MutableLiveData()
@@ -62,7 +64,7 @@ class DeliveryViewModel @Inject constructor(
       }
     }
 
-    fun performActionOnDeliveryDetail() {
+    fun performActionOnDeliveryDetail(canCancelActiveDelivery: Boolean = false) {
         viewModelScope.launch {
             _deliveryActionState.value = DataState.Loading
             val detailState = _deliveryDetailState.value
@@ -70,12 +72,21 @@ class DeliveryViewModel @Inject constructor(
                 _deliveryActionState.value = DataState.Error(context.getString(R.string.delivery_action_error_incorrect_state))
             }
             detailState as DataState.Success
-            when(detailState.result.status) {
-                DeliveryStatus.DEFAULT -> { //todo must activate
-                    Log.d(LOG_TAG_APP, "performActionOnDeliveryDetail -> must activate")
+            val delivery = detailState.result
+            val currentActiveDelivery = getActiveDeliveryUseCase()
+            if (currentActiveDelivery != null && !canCancelActiveDelivery) {
+                _deliveryActionState.value = DataState.Error(delivery)
+                return@launch
+            }
+            //todo check if there are active delivery and ask for confirmation of finishing
+            when(delivery.status) {
+                DeliveryStatus.DEFAULT -> {
+                    TrackingManager.start(delivery.id)
+                    setActiveDeliveryUseCase(delivery)
                 }
-                DeliveryStatus.ACTIVE -> { //todo must stop
-                    Log.d(LOG_TAG_APP, "performActionOnDeliveryDetail -> must stop")
+                DeliveryStatus.ACTIVE -> {
+                    TrackingManager.stop()
+                    setCompleteDeliveryUseCase(delivery)
                 }
                 DeliveryStatus.COMPLETED ->
                     _deliveryActionState.value = DataState.Error(context.getString(R.string.delivery_action_error_completed))

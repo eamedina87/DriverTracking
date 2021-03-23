@@ -5,6 +5,7 @@ import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLoca
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
 import tech.medina.drivertracking.data.mapper.Mapper
 import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.domain.model.DeliveryStatus
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -48,6 +49,11 @@ class DeliveryRepositoryImpl @Inject constructor(
         }
         return mapper.toModel(localData)
     }
+
+    override suspend fun getActiveDelivery(): List<Delivery> =
+        localDataSource.getDeliveryWithStatus(DeliveryStatus.ACTIVE.ordinal).map {
+            mapper.toModel(it)
+        }
 
     override suspend fun updateDelivery(vararg delivery: Delivery): Boolean {
         val localData = delivery.map {

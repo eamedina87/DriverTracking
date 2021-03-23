@@ -22,6 +22,9 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun getDeliveryWithId(id: Long): DeliveryLocal =
         database.deliveryDao().getDeliveryWithId(id)
 
+    override suspend fun getDeliveryWithStatus(status:Int): List<DeliveryLocal> =
+        database.deliveryDao().getDeliveryWithStatus(status)
+
     //TrackingDao
     override suspend fun saveTracking(vararg data: TrackingLocal): Boolean =
         database.trackingDao().insert(* data).isNotEmpty()
