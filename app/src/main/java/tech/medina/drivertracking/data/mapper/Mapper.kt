@@ -2,11 +2,11 @@ package tech.medina.drivertracking.data.mapper
 
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
-import tech.medina.drivertracking.data.datasource.location.entity.Location
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingData
 import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingRequest
 import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.domain.model.Location
 import tech.medina.drivertracking.domain.model.Tracking
 
 interface Mapper {

@@ -9,8 +9,8 @@ import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import tech.medina.drivertracking.R
-import tech.medina.drivertracking.data.datasource.location.entity.Location
 import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.domain.model.Location
 import tech.medina.drivertracking.domain.model.Tracking
 import tech.medina.drivertracking.domain.model.TrackingStatus
 import tech.medina.drivertracking.domain.usecase.GetActiveDeliveryUseCase
@@ -81,6 +81,8 @@ class TrackingService: Service() {
         super.onDestroy()
         locationManager.stop()
         batteryManager.stop()
+        sendTimer.cancel()
+        saveTimer.cancel()
         isSaveTimerActive = false
         isSendTimerActive = false
         coroutineScope.cancel()
@@ -98,14 +100,14 @@ class TrackingService: Service() {
 
     private fun initSendTrackingTimer() {
         if (!isSendTimerActive) {
-            sendTimer.schedule(sendTimerTask, 5 * 1000, sendPeriod)
+            sendTimer.scheduleAtFixedRate(sendTimerTask, 5 * 1000, sendPeriod)
             isSendTimerActive = true
         }
     }
 
     private fun initSaveTrackingTimer() {
         if (!isSaveTimerActive) {
-            saveTimer.schedule(saveTimerTask, 5 * 1000, savePeriod)
+            saveTimer.scheduleAtFixedRate(saveTimerTask, 5 * 1000, savePeriod)
             isSaveTimerActive = true
         }
     }
@@ -157,8 +159,8 @@ class TrackingService: Service() {
 
     private fun getNotification(): Notification =
         NotificationCompat.Builder(this, getString(R.string.notification_channel_id))
-            .setContentTitle(getText(R.string.notification_title))
-            .setContentText(getText(R.string.notification_message))
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_message))
             .setContentIntent(pendingIntent)
             .setTicker(getText(R.string.ticker_text))
             .build()

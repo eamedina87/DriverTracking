@@ -5,12 +5,8 @@ import android.content.Context
 import android.os.Looper
 import com.google.android.gms.location.*
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import tech.medina.drivertracking.data.datasource.location.entity.Location
 import tech.medina.drivertracking.data.mapper.Mapper
-import tech.medina.drivertracking.domain.model.DeliveryStatus
+import tech.medina.drivertracking.domain.model.Location
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,10 +21,6 @@ class LocationManager @Inject constructor(
     }
 
     private var onLocationObtained: ((Location) -> Unit)? = null
-    private val _currentLocation: MutableStateFlow<Location> =
-        MutableStateFlow(Location(-100.0,-100.0,0))
-    val currentLocation: StateFlow<Location> get() = _currentLocation
-
     private var state = LocationState.DEFAULT
     private lateinit var fusedLocationProvider: FusedLocationProviderClient
 
@@ -51,7 +43,6 @@ class LocationManager @Inject constructor(
                     mapper.toLocation(it)
                 }.firstOrNull()?.let {
                     state = LocationState.OBTAINED
-                    _currentLocation.value = it
                     onLocationObtained?.invoke(it)
                 }
             }

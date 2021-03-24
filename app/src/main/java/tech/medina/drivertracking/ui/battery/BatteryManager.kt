@@ -7,9 +7,6 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,23 +22,18 @@ class BatteryManager @Inject constructor(
 
     private var onBatteryPercentageObtained: ((Int) -> Unit)? = null
     private var state: State = State.DEFAULT
-    private val _currentBatteryPercentage: MutableStateFlow<Int> = MutableStateFlow(-1)
-    val currentBatteryPercentage: StateFlow<Int> get() = _currentBatteryPercentage
-    private val updatePeriod =  30 * 1000L // 3 minutes
-    private var timer: Timer? = null
+    private val updatePeriod =  30 * 1000L // todo 5 minutes
+    private var timer: Timer = Timer()
 
     fun init(onBatteryPercentageObtained: (Int) -> Unit) {
-        //if (!mustBeInitialized()) return
+        if (!mustBeInitialized()) return
         this.onBatteryPercentageObtained = onBatteryPercentageObtained
         state = try {
-            timer?.cancel()
-            timer = Timer().apply {
-                scheduleAtFixedRate(object: TimerTask() {
-                    override fun run() {
-                        getBatteryData()
-                    }
-                }, 0, updatePeriod)
-            }
+            timer.scheduleAtFixedRate(object: TimerTask() {
+                override fun run() {
+                    getBatteryData()
+                }
+            }, 0, updatePeriod)
             State.INITIALIZED
         } catch (e: IllegalStateException) {
             State.ERROR
@@ -49,7 +41,7 @@ class BatteryManager @Inject constructor(
     }
 
     fun stop() {
-        timer?.cancel()
+        timer.cancel()
         state = State.STOPPED
     }
 
@@ -65,7 +57,6 @@ class BatteryManager @Inject constructor(
             val batteryPct = level / scale.toDouble()
             (batteryPct * 100).toInt()
         }
-        _currentBatteryPercentage.value = battery
         onBatteryPercentageObtained?.invoke(battery)
         state = State.OBTAINED
     }

@@ -4,12 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import tech.medina.drivertracking.data.datasource.battery.BatteryDataSource
-import tech.medina.drivertracking.data.datasource.battery.BatteryDataSourceImpl
 import tech.medina.drivertracking.data.datasource.local.LocalDataSource
 import tech.medina.drivertracking.data.datasource.local.LocalDataSourceImpl
-import tech.medina.drivertracking.data.datasource.location.LocationDataSource
-import tech.medina.drivertracking.data.datasource.location.LocationDataSourceImpl
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSourceImpl
 import tech.medina.drivertracking.data.mapper.Mapper
@@ -42,16 +38,6 @@ abstract class DataModuleBinds {
     abstract fun bindRemoteDataSource(
         dataSourceImpl: RemoteDataSourceImpl
     ): RemoteDataSource
-
-    @Binds
-    abstract fun bindLocationDataSource(
-        dataSourceImpl: LocationDataSourceImpl
-    ): LocationDataSource
-
-    @Binds
-    abstract fun bindBatteryDataSource(
-        dataSourceImpl: BatteryDataSourceImpl
-    ): BatteryDataSource
 
     @Binds
     abstract fun bindMapper(

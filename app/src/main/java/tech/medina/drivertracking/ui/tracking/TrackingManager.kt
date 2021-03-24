@@ -21,22 +21,22 @@ class TrackingManager @Inject constructor(
     private var currentState: State = State.DEFAULT
 
     fun start(deliveryId: Long, onSuccessStart: (() -> Unit)? = null) {
-        /*when(currentState) {
+        when(currentState) {
             State.DEFAULT,
-            State.STOPPED -> {*/
+            State.STOPPED -> {
                 startTracking()
                 currentDeliveryId = deliveryId
                 onSuccessStart?.invoke()
-            /*}
+            }
             State.STARTED -> {
                 stopTracking()
                 currentDeliveryId = -1
             }
-        }*/
+        }
     }
 
     fun stop() {
-        //if (currentState != State.STARTED) return
+        if (currentState != State.STARTED) return
         stopTracking()
     }
 
@@ -50,8 +50,8 @@ class TrackingManager @Inject constructor(
     }
 
     private fun stopTracking() {
-        //currentState = State.STOPPED
-        //context.stopService(serviceIntent)
+        currentState = State.STOPPED
+        context.stopService(serviceIntent)
     }
 
 }

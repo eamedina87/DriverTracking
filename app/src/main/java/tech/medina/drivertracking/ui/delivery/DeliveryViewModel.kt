@@ -75,18 +75,19 @@ class DeliveryViewModel @Inject constructor(
             detailState as DataState.Success
             val delivery = detailState.result
             val currentActiveDelivery = getActiveDeliveryUseCase()
-            if (currentActiveDelivery != null && !canCancelActiveDelivery) {
+            if (delivery.status == DeliveryStatus.DEFAULT && currentActiveDelivery != null
+                    && !canCancelActiveDelivery) {
                 _deliveryActionState.value = DataState.Error(currentActiveDelivery)
                 return@launch
             }
             //todo check if there are active delivery and ask for confirmation of finishing
             when(delivery.status) {
                 DeliveryStatus.DEFAULT -> {
-                    trackingManager.start(delivery.id)
                     setActiveDeliveryUseCase(delivery)
+                    trackingManager.start(delivery.id)
                 }
                 DeliveryStatus.ACTIVE -> {
-                    //trackingManager.stop()
+                    trackingManager.stop()
                     setCompleteDeliveryUseCase(delivery)
                 }
                 DeliveryStatus.COMPLETED ->
