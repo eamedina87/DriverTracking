@@ -3,10 +3,12 @@ package tech.medina.drivertracking.ui.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
+import android.util.Log
 import com.google.android.gms.location.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import tech.medina.drivertracking.data.mapper.Mapper
 import tech.medina.drivertracking.domain.model.Location
+import tech.medina.drivertracking.ui.utils.Constants
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,6 +45,7 @@ class LocationManager @Inject constructor(
                     mapper.toLocation(it)
                 }.firstOrNull()?.let {
                     state = LocationState.OBTAINED
+                    Log.d(Constants.LOG_TAG_APP, "LocationManager.location $it")
                     onLocationObtained?.invoke(it)
                 }
             }
@@ -50,6 +53,7 @@ class LocationManager @Inject constructor(
     }
 
     fun init(onLocationObtained: (Location) -> Unit) {
+        Log.d(Constants.LOG_TAG_APP, "LocationManager.init")
         this.onLocationObtained = onLocationObtained
         if (!this::fusedLocationProvider.isInitialized) {
             fusedLocationProvider = LocationServices.getFusedLocationProviderClient(context)
@@ -58,12 +62,13 @@ class LocationManager @Inject constructor(
     }
 
     fun stop() {
+        Log.d(Constants.LOG_TAG_APP, "LocationManager.stop")
         stopLocationUpdates()
     }
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        //if (state == LocationState.REQUESTING || state == LocationState.OBTAINED) return
+        if (state == LocationState.REQUESTING || state == LocationState.OBTAINED) return
         runIfLocationProviderIsInitialized {
             fusedLocationProvider.requestLocationUpdates(
                 locationRequest,
@@ -75,7 +80,7 @@ class LocationManager @Inject constructor(
     }
 
     private fun stopLocationUpdates() {
-        //if (state != LocationState.REQUESTING && state != LocationState.OBTAINED) return
+        if (state != LocationState.REQUESTING && state != LocationState.OBTAINED) return
         runIfLocationProviderIsInitialized {
             fusedLocationProvider.removeLocationUpdates(locationCallback)
             state = LocationState.STOPPED

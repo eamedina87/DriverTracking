@@ -12,6 +12,9 @@ interface TrackingDao {
     @Update
     suspend fun update(vararg data: TrackingLocal): Int
 
+    @Update
+    suspend fun updateList(data: List<TrackingLocal>): Int
+
     @Delete
     suspend fun delete(vararg data: TrackingLocal): Int
 

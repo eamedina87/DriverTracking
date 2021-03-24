@@ -5,14 +5,14 @@ import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.domain.model.DeliveryStatus
 import javax.inject.Inject
 
+/***
+ * This use case is in charge of setting the current ACTIVE Delivery to COMPLETED
+ * and setting the parameter Delivery as ACTIVE
+ */
+
 class SetActiveDeliveryUseCase @Inject constructor(
     private val deliveryRepository: DeliveryRepository
 ) {
-
-    /***
-     * This use case is in charge of setting the current active delivery to COMPLETED and
-     * setting the parameter delivery as ACTIVE
-     */
 
     suspend operator fun invoke(activeDelivery: Delivery): Boolean {
         activeDelivery.status = DeliveryStatus.ACTIVE

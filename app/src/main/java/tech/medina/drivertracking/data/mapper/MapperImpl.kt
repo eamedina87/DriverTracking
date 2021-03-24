@@ -65,20 +65,21 @@ class MapperImpl @Inject constructor(): Mapper {
             requiresSignature = model.requiresSignature
         )
 
-    override fun toLocal(model: Tracking): TrackingLocal =
+    override fun toLocal(model: Tracking, timestamp: Long?): TrackingLocal =
         TrackingLocal(
-            id = 0,
+            id = model.id,
             latitude = model.latitude,
             longitude = model.longitude,
             deliveryId = model.deliveryId,
             batteryLevel = model.batteryLevel,
             timestamp = model.timestamp,
             status = model.status.ordinal,
-            syncTimestamp = null
+            syncTimestamp = timestamp
         )
 
     override fun toModel(entity: TrackingLocal): Tracking =
         Tracking(
+            id = entity.id,
             latitude = entity.latitude,
             longitude = entity.longitude,
             deliveryId = entity.deliveryId,
@@ -93,4 +94,5 @@ class MapperImpl @Inject constructor(): Mapper {
             longitude = frameworkLocation.longitude,
             timestamp = frameworkLocation.time
         )
+
 }

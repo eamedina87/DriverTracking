@@ -6,7 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
+import tech.medina.drivertracking.ui.utils.Constants
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,11 +24,12 @@ class BatteryManager @Inject constructor(
 
     private var onBatteryPercentageObtained: ((Int) -> Unit)? = null
     private var state: State = State.DEFAULT
-    private val updatePeriod =  30 * 1000L // todo 5 minutes
+    private val updatePeriod =  5 * 60 * 1000L // 5 minutes
     private var timer: Timer = Timer()
 
     fun init(onBatteryPercentageObtained: (Int) -> Unit) {
         if (!mustBeInitialized()) return
+        Log.d(Constants.LOG_TAG_APP, "BatteryManager.init")
         this.onBatteryPercentageObtained = onBatteryPercentageObtained
         state = try {
             timer.scheduleAtFixedRate(object: TimerTask() {
@@ -41,6 +44,7 @@ class BatteryManager @Inject constructor(
     }
 
     fun stop() {
+        Log.d(Constants.LOG_TAG_APP, "BatteryManager.stop")
         timer.cancel()
         state = State.STOPPED
     }
@@ -57,6 +61,7 @@ class BatteryManager @Inject constructor(
             val batteryPct = level / scale.toDouble()
             (batteryPct * 100).toInt()
         }
+        Log.d(Constants.LOG_TAG_APP, "BatteryManager.percentage $battery")
         onBatteryPercentageObtained?.invoke(battery)
         state = State.OBTAINED
     }

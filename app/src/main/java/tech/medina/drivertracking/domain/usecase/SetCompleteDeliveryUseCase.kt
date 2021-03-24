@@ -5,6 +5,11 @@ import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.domain.model.DeliveryStatus
 import javax.inject.Inject
 
+/****
+ * This UseCase is in charge of updating the Delivery's status
+ * to Completed/Finished in the database
+ ****/
+
 class SetCompleteDeliveryUseCase @Inject constructor(
     private val deliveryRepository: DeliveryRepository
 ) {

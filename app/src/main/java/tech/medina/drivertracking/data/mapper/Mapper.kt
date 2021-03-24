@@ -21,7 +21,7 @@ interface Mapper {
     fun toModel(entity: TrackingLocal): Tracking
     //Model to Local
     fun toLocal(model: Delivery): DeliveryLocal
-    fun toLocal(model: Tracking): TrackingLocal
+    fun toLocal(model: Tracking, timestamp: Long? = null): TrackingLocal
 
     //Android Location to Location
     fun toLocation(frameworkLocation: android.location.Location): Location

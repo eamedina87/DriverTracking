@@ -1,6 +1,7 @@
 package tech.medina.drivertracking.domain.model
 
 data class Tracking(
+    val id: Long,
     val latitude: Double,
     val longitude: Double,
     val deliveryId: Long,

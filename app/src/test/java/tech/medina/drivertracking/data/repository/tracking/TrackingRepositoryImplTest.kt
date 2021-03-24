@@ -69,7 +69,7 @@ class TrackingRepositoryImplTest : BaseTest() {
 
     @Test
     fun getUnsentData() = dispatcher.runBlockingTest {
-        with(trackingRepository.getUnsentData()) {
+        with(trackingRepository.getTrackingDataWithStatus(TrackingStatus.DEFAULT.ordinal)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isNotEmpty()
             Truth.assertThat(this.first().status).isNotEqualTo(TrackingStatus.SENT)
