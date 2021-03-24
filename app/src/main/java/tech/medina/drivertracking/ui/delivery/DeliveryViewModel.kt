@@ -1,7 +1,6 @@
 package tech.medina.drivertracking.ui.delivery
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -13,12 +12,12 @@ import tech.medina.drivertracking.domain.model.DataState
 import tech.medina.drivertracking.domain.model.Delivery
 import tech.medina.drivertracking.domain.model.DeliveryStatus
 import tech.medina.drivertracking.domain.usecase.*
-import tech.medina.drivertracking.ui.tracking.TrackingManager
+import tech.medina.drivertracking.domain.tracking.TrackingManager
 import javax.inject.Inject
 
 @HiltViewModel
 class DeliveryViewModel @Inject constructor(
-    state: SavedStateHandle,
+    private val state: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val dispatcher: CoroutineDispatcher,
     private val trackingManager: TrackingManager,
@@ -35,8 +34,8 @@ class DeliveryViewModel @Inject constructor(
     private val _deliveryDetailState: MutableLiveData<DataState<Delivery>> = MutableLiveData()
     val deliveryDetailState: LiveData<DataState<Delivery>> get() = _deliveryDetailState
 
-    private val _deliveryActionState: MutableLiveData<DataState<Int>> = MutableLiveData()
-    val deliveryActionState: LiveData<DataState<Int>> get() = _deliveryActionState
+    private val _deliveryActionState: MutableLiveData<DataState<Boolean>> = MutableLiveData()
+    val deliveryActionState: LiveData<DataState<Boolean>> get() = _deliveryActionState
 
 
     fun getDeliveryList(forceUpdate: Boolean = false) {
@@ -75,20 +74,24 @@ class DeliveryViewModel @Inject constructor(
             detailState as DataState.Success
             val delivery = detailState.result
             val currentActiveDelivery = getActiveDeliveryUseCase()
-            if (delivery.status == DeliveryStatus.DEFAULT && currentActiveDelivery != null
-                    && !canCancelActiveDelivery) {
+            //If this delivery can be activated, first we must check if there is another one active
+            //If that's the case we prompt the user to finish it
+            if (delivery.status == DeliveryStatus.DEFAULT &&
+                currentActiveDelivery != null &&
+                !canCancelActiveDelivery) {
                 _deliveryActionState.value = DataState.Error(currentActiveDelivery)
                 return@launch
             }
-            //todo check if there are active delivery and ask for confirmation of finishing
             when(delivery.status) {
                 DeliveryStatus.DEFAULT -> {
                     setActiveDeliveryUseCase(delivery)
                     trackingManager.start(delivery.id)
+                    _deliveryActionState.value = DataState.Success(true)
                 }
                 DeliveryStatus.ACTIVE -> {
                     trackingManager.stop()
                     setCompleteDeliveryUseCase(delivery)
+                    _deliveryActionState.value = DataState.Success(true)
                 }
                 DeliveryStatus.COMPLETED ->
                     _deliveryActionState.value = DataState.Error(context.getString(R.string.delivery_action_error_completed))

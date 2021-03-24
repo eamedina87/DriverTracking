@@ -92,7 +92,7 @@ class DeliveryDetailFragment : BaseFragment() {
     private fun showOtherDeliveryActiveDialog(activeDelivery: Delivery) {
         showSnackbar(
             requireContext().getString(R.string.delivery_action_error_current_active, activeDelivery.customerName),
-            requireContext().getString(R.string.delivery_button_complete)
+            requireContext().getString(R.string.delivery_button_finish)
         ) {
             performActionOnDelivery(canCancelActiveDelivery = true)
         }
@@ -137,13 +137,19 @@ class DeliveryDetailFragment : BaseFragment() {
         }
     }
 
-    private fun askPermission(permisssion: String) {
-        if (shouldShowRequestPermissionRationale(permisssion)) {
-            //showSnackbar(getString(R.string.location_permission_rationale))
-            requestLocationPermission.launch(permisssion)
-            //todo show dialogs
+    private fun askPermission(permission: String) {
+        if (shouldShowRequestPermissionRationale(permission)) {
+            requestLocationPermission.launch(permission)
+            navigator.showTwoOptionsDialog(baseActivity,
+                message = getString(R.string.location_permission_rationale),
+                rightButtonText = getString(R.string.location_permission_rationale_approve),
+                rightButtonFunction = {
+                    requestLocationPermission.launch(permission)
+                },
+                leftButtonText = getString(R.string.location_permission_rationale_close)
+                )
         } else {
-            requestLocationPermission.launch(permisssion)
+            requestLocationPermission.launch(permission)
         }
     }
 
@@ -151,13 +157,27 @@ class DeliveryDetailFragment : BaseFragment() {
         if (granted) {
             checkPermissions()
         } else {
-            showSnackbar(getString(R.string.location_permission_denied))
-            //todo show dialogs
+            navigator.showTwoOptionsDialog(baseActivity,
+                message = getString(R.string.location_permission_denied),
+                rightButtonText = getString(R.string.location_permission_rationale_approve),
+                rightButtonFunction = {
+                    checkPermissions()
+                },
+                leftButtonText = getString(R.string.location_permission_rationale_close)
+            )
         }
     }
 
     private fun performActionOnDelivery(canCancelActiveDelivery: Boolean = false) {
         viewModel.performActionOnDeliveryDetail(canCancelActiveDelivery)
+    }
+
+    private fun showLoader() {
+        binding.progress.container.visibility = View.VISIBLE
+    }
+
+    private fun hideLoader() {
+        binding.progress.container.visibility = View.GONE
     }
 
 }

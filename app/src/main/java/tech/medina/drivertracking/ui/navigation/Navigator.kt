@@ -5,6 +5,7 @@ import android.os.Bundle
 import tech.medina.drivertracking.ui.base.BaseActivity
 import tech.medina.drivertracking.ui.delivery.detail.DeliveryDetailActivity
 import tech.medina.drivertracking.ui.delivery.detail.DeliveryDetailFragment
+import tech.medina.drivertracking.ui.dialog.DialogWithTwoOptions
 import tech.medina.drivertracking.ui.utils.Constants.INTENT_EXTRA_DELIVERY_ID
 import tech.medina.drivertracking.ui.utils.Utils
 import javax.inject.Inject
@@ -50,9 +51,9 @@ class Navigator @Inject constructor() {
                              rightButtonText: String? = null,
                              leftButtonFunction: (() -> Unit)? = null,
                              rightButtonFunction: (() -> Unit)? = null) {
-       /* todo DriverTrackingDialogTwoOptions(title, message, leftButtonText, rightButtonText,
+       DialogWithTwoOptions(title, message, leftButtonText, rightButtonText,
             leftButtonFunction, rightButtonFunction).
-        show(activity.supportFragmentManager, "twoOptionsDialog")*/
+        show(activity.supportFragmentManager, "twoOptionsDialog")
     }
 
     fun goToDetail(source: BaseActivity, deliveryId: Long, containerId: Int) {

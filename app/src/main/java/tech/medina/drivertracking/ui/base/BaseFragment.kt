@@ -60,14 +60,6 @@ abstract class BaseFragment : Fragment() {
         showMessage(error.toString())
     }
 
-    protected fun showLoader() {
-        baseActivity.showLoader()
-    }
-
-    protected fun hideLoader() {
-        baseActivity.hideLoader()
-    }
-
     protected fun hasPermissions(permissionList: Array<String>): Boolean {
         var hasPermissions = true
         permissionList.forEach {

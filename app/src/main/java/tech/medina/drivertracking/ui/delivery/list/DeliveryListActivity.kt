@@ -82,5 +82,12 @@ class DeliveryListActivity : BaseActivity() {
         navigator.goToDetail(this, delivery.id, R.id.item_detail_container)
     }
 
+    private fun showLoader() {
+        binding.progress.container.visibility = View.VISIBLE
+    }
+
+    private fun hideLoader() {
+        binding.progress.container.visibility = View.GONE
+    }
 
 }

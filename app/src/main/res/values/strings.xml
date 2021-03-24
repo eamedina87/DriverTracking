@@ -12,11 +12,11 @@
     <string name="delivery_button_finish">Finish</string>
     <string name="delivery_button_complete">Complete</string>
     <string name="delivery_action_error_incorrect_state">No Action could be taken. Please retry</string>
-    <string name="delivery_action_error_current_active">There is an active delivery for %s. First you have to complete it.</string>
+    <string name="delivery_action_error_current_active">There is an active delivery for %s.</string>
     <string name="delivery_action_error_completed">Delivery has already been completed</string>
-    <string name="location_permission_denied">No tracking actions can be done without permissions..</string>
+    <string name="location_permission_denied">No tracking actions can be done without permissions. Please provide access to the device location so the app can work properly.</string>
     <string name="snackbar_dismiss">Dismiss</string>
-    <string name="location_permission_rationale">Please provide access to the device location.</string>
+    <string name="location_permission_rationale">Please provide access to the device location and then allow to listen to location changes all the time. This will allow the app to inform the user when the package is arriving.</string>
     <string name="location_permission_rationale_approve">Approve</string>
     <string name="location_permission_rationale_deny">Deny</string>
     <string name="notification_title">DriverTracking</string>
@@ -25,4 +25,5 @@
     <string name="ticker_text">Ticker</string>
     <string name="notification_channel_description">Handles the location notification</string>
     <string name="notification_channel_name">Location Notification Channel</string>
+    <string name="location_permission_rationale_close">Close</string>
 </resources>

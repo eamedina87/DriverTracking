@@ -1,9 +1,10 @@
-package tech.medina.drivertracking.ui.tracking
+package tech.medina.drivertracking.domain.tracking
 
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
+import tech.medina.drivertracking.ui.service.TrackingService
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -43,7 +43,7 @@ class DeliveryDetailActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             android.R.id.home -> {
-                navigateUpTo(Intent(this, DeliveryListActivity::class.java))
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)

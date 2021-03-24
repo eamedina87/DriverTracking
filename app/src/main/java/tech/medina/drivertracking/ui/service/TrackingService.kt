@@ -1,4 +1,4 @@
-package tech.medina.drivertracking.ui.tracking
+package tech.medina.drivertracking.ui.service
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -18,9 +18,9 @@ import tech.medina.drivertracking.domain.usecase.GetActiveDeliveryUseCase
 import tech.medina.drivertracking.domain.usecase.RemoveTrackingUseCase
 import tech.medina.drivertracking.domain.usecase.SendTrackingUseCase
 import tech.medina.drivertracking.domain.usecase.SaveTrackingUseCase
-import tech.medina.drivertracking.ui.battery.BatteryManager
+import tech.medina.drivertracking.domain.battery.BatteryManager
 import tech.medina.drivertracking.ui.delivery.list.DeliveryListActivity
-import tech.medina.drivertracking.ui.location.LocationManager
+import tech.medina.drivertracking.domain.location.LocationManager
 import tech.medina.drivertracking.ui.utils.Constants.LOG_TAG_APP
 import tech.medina.drivertracking.ui.utils.Constants.NOTIFICATION_ID
 import java.util.*

@@ -1,52 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginHorizontal="16dp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/customer_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_item_height"
-        android:gravity="center_vertical"
-        android:visibility="gone"
-        tools:text="Customer Name: "
-        />
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_item_height"
-        android:gravity="center_vertical"
-        tools:text="Address: "
-        />
+        <TextView
+            android:id="@+id/customer_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_item_height"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:text="Customer Name: "
+            />
 
-    <TextView
-        android:id="@+id/requires_signature"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_item_height"
-        android:gravity="center_vertical"
-        tools:text="Requires Signature: "
-        />
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_item_height"
+            android:gravity="center_vertical"
+            tools:text="Address: "
+            />
 
-    <TextView
-        android:id="@+id/special_instructions"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_item_height"
-        android:gravity="center_vertical"
-        tools:text="Special Instructions: "
-        />
+        <TextView
+            android:id="@+id/requires_signature"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_item_height"
+            android:gravity="center_vertical"
+            tools:text="Requires Signature: "
+            />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="60dp"
-        android:visibility="gone"
-        tools:text="Make Active"
-        />
+        <TextView
+            android:id="@+id/special_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_item_height"
+            android:gravity="center_vertical"
+            tools:text="Special Instructions: "
+            />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="60dp"
+            android:visibility="gone"
+            tools:text="Make Active"
+            />
+
+    </LinearLayout>
+
+    <include android:id="@+id/progress" layout="@layout/progress_bar" />
+
+</FrameLayout>

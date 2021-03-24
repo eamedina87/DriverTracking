@@ -1,4 +1,4 @@
-package tech.medina.drivertracking.ui.location
+package tech.medina.drivertracking.domain.location
 
 import android.annotation.SuppressLint
 import android.content.Context

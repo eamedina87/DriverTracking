@@ -1,4 +1,4 @@
-package tech.medina.drivertracking.ui.battery
+package tech.medina.drivertracking.domain.battery
 
 import android.content.Context
 import android.content.Context.BATTERY_SERVICE

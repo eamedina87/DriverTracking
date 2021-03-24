@@ -40,7 +40,7 @@
                 android:value="tech.medina.drivertracking.ui.delivery.list.DeliveryListActivity" />
         </activity>
 
-        <service android:name=".ui.tracking.TrackingService" android:exported="false"/>
+        <service android:name=".ui.service.TrackingService" android:exported="false"/>
 
     </application>
 

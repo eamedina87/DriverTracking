@@ -29,6 +29,8 @@
 
         <include android:id="@+id/list" layout="@layout/item_list" />
 
+        <include android:id="@+id/progress" layout="@layout/progress_bar" />
+
         <TextView
             android:id="@+id/text_message"
             android:layout_width="match_parent"
@@ -36,8 +38,11 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:visibility="gone"
             tools:text="An error occurred"
             />
+
+
 
     </FrameLayout>
 

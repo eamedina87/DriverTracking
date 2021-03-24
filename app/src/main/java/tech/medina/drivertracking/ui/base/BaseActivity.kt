@@ -26,14 +26,6 @@ abstract class BaseActivity: AppCompatActivity() {
         initView(savedInstanceState)
     }
 
-    fun showLoader() {
-        //todo
-    }
-
-    fun hideLoader() {
-        //todo
-    }
-
     fun replaceFragment(
         containerViewId: Int,
         fragment: Fragment,
