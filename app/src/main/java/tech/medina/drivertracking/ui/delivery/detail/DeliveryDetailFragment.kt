@@ -63,7 +63,7 @@ class DeliveryDetailFragment : BaseFragment() {
                     }
                     is DataState.Error -> {
                         hideLoader()
-                        onError(state.error)
+                        onDeliveryDetailError()
                     }
                 }
             }
@@ -123,6 +123,17 @@ class DeliveryDetailFragment : BaseFragment() {
             isEnabled = delivery.status.toButtonEnable()
             setOnClickListener(onButtonClicked)
         }
+    }
+
+    private fun onDeliveryDetailError() {
+        navigator.showTwoOptionsDialog(baseActivity,
+            message = getString(R.string.delivery_detail_error),
+            rightButtonText = getString(R.string.delivery_list_retry),
+            rightButtonFunction = {
+                fetchDeliveryDetail()
+            },
+            leftButtonText = getString(R.string.delivery_list_cancel)
+        )
     }
 
     private val onButtonClicked = View.OnClickListener {

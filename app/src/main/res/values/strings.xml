@@ -26,4 +26,9 @@
     <string name="notification_channel_description">Handles the location notification</string>
     <string name="notification_channel_name">Location Notification Channel</string>
     <string name="location_permission_rationale_close">Close</string>
+    <string name="delivery_list_error">An error occurred obtaining the deliveries.</string>
+    <string name="delivery_list_retry">Retry</string>
+    <string name="delivery_list_cancel">Cancel</string>
+    <string name="delivery_list_name">DriverTracking App</string>
+    <string name="delivery_detail_error">An error occurred obtaining the delivery detail.</string>
 </resources>

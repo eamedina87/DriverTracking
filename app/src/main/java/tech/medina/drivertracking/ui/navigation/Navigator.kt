@@ -38,12 +38,6 @@ class Navigator @Inject constructor() {
 
     }
 
-    fun showAlert(activity: BaseActivity, title: String? = null, message: String,
-                  function: (() -> Unit)? = null) {
-        /*todo DriverTrackingAlert(title, message, function).
-            show(activity.supportFragmentManager, "alert")*/
-    }
-
     fun showTwoOptionsDialog(activity: BaseActivity,
                              title: String? = null,
                              message: String,

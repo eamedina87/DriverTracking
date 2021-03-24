@@ -1,6 +1,5 @@
 package tech.medina.drivertracking.ui.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,29 +37,21 @@ class DialogWithTwoOptions(private val title: String? = null,
             binding.dialogDescription.text = it
         }
         leftButtonText?.let {
-            binding.dialogLeftButton.setText(it)
+            binding.dialogLeftButton.text = it
         }
         rightButtonText?.let {
-            binding.dialogRightButton.setText(it)
+            binding.dialogRightButton.text = it
         }
-        //Right button is considered a deny or dismiss action button
         binding.dialogRightButton.setOnClickListener {
             rightButtonFunction?.invoke()
             dismiss()
             dismissedByUser = true
         }
-        //Left button is considered a confirm or positive action button
         binding.dialogLeftButton.setOnClickListener {
             leftButtonFunction?.invoke()
             dismiss()
             dismissedByUser = true
         }
-
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        if (!dismissedByUser) rightButtonFunction?.invoke()
     }
 
 }
