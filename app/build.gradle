@@ -37,13 +37,11 @@ android {
             signingConfig signingConfigs.drivertracking
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "API_BASE_URL", project.property('API_BASE_URL_REMOTE')
-            manifestPlaceholders = [apiUrl: project.property('API_BASE_URL_REMOTE')]
         }
 
         debug {
             applicationIdSuffix ".dev"
             buildConfigField "String", "API_BASE_URL", project.property('API_BASE_URL_LOCAL')
-            manifestPlaceholders = [apiUrl: project.property('API_BASE_URL_LOCAL')]
         }
     }
 

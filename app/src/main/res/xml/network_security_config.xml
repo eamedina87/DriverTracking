@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <!--<domain includeSubdomains="true">"${apiUrl}"</domain>-->
         <domain includeSubdomains="true">192.168.0.33</domain>
+        <domain includeSubdomains="true">my-json-server.typicode.com/eamedina87/drivertracking-backend/</domain>
     </domain-config>
 </network-security-config>
