@@ -11,28 +11,28 @@ import tech.medina.drivertracking.base.BaseTest
 import tech.medina.drivertracking.data.datasource.local.db.Database
 import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.local.db.entities.TrackingLocal
-import tech.medina.drivertracking.data.utils.mock
+import tech.medina.drivertracking.data.utils.TestingUtils
 
 @ExperimentalCoroutinesApi
 class LocalDataSourceImplTest : BaseTest() {
 
     private val database = mockk<Database>() {
         coEvery { deliveryDao().insert(any()) } returns listOf(1, 2, 3)
-        coEvery { deliveryDao().getDeliveryWithId(any())} returns DeliveryLocal.mock()
-        coEvery { deliveryDao().getAll() } returns listOf(DeliveryLocal.mock())
+        coEvery { deliveryDao().getDeliveryWithId(any())} returns TestingUtils.mockDeliveryLocal()
+        coEvery { deliveryDao().getAll() } returns listOf(TestingUtils.mockDeliveryLocal())
         coEvery { deliveryDao().update(any()) } returns 1
         coEvery { trackingDao().insert(any()) } returns listOf(1, 2, 3)
         coEvery { trackingDao().update(any()) } returns 1
         coEvery { trackingDao().delete(any()) } returns 1
-        coEvery { trackingDao().getAll() } returns listOf(TrackingLocal.mock())
-        coEvery { trackingDao().getAllWithStatus(any()) } returns listOf(TrackingLocal.mock())
+        coEvery { trackingDao().getAll() } returns listOf(TestingUtils.mockTrackingLocal())
+        coEvery { trackingDao().getAllWithStatus(any()) } returns listOf(TestingUtils.mockTrackingLocal())
     }
 
     private val localDataSource = LocalDataSourceImpl(database)
 
     @Test
     fun saveDeliveryList() = dispatcher.runBlockingTest {
-        with(localDataSource.saveDelivery(DeliveryLocal.mock())) {
+        with(localDataSource.saveDelivery(TestingUtils.mockDeliveryLocal())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }
@@ -41,7 +41,7 @@ class LocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun updateDelivery() = dispatcher.runBlockingTest {
-        with(localDataSource.updateDelivery(DeliveryLocal.mock())) {
+        with(localDataSource.updateDelivery(TestingUtils.mockDeliveryLocal())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }
@@ -69,7 +69,7 @@ class LocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun saveTracking() = dispatcher.runBlockingTest {
-        with(localDataSource.saveTracking(TrackingLocal.mock())) {
+        with(localDataSource.saveTracking(TestingUtils.mockTrackingLocal())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }
@@ -78,7 +78,7 @@ class LocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun updateTracking() = dispatcher.runBlockingTest {
-        with(localDataSource.updateTracking(TrackingLocal.mock())) {
+        with(localDataSource.updateTracking(TestingUtils.mockTrackingLocal())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }
@@ -87,7 +87,7 @@ class LocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun deleteTracking() = dispatcher.runBlockingTest {
-        with(localDataSource.deleteTracking(TrackingLocal.mock())) {
+        with(localDataSource.deleteTracking(TestingUtils.mockTrackingLocal())) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this).isTrue()
         }

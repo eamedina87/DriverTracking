@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import tech.medina.drivertracking.data.mapper.MapperImpl
@@ -34,6 +35,11 @@ open class BaseTest : CoroutineScope {
     @After
     fun after() {
         clearCoroutines()
+    }
+
+    @Test
+    fun `baseTest is working`() {
+        
     }
 
     private fun setupCoroutines() {

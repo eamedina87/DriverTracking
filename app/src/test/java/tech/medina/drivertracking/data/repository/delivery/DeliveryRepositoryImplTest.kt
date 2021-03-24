@@ -7,12 +7,8 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import tech.medina.drivertracking.base.BaseTest
 import tech.medina.drivertracking.data.datasource.local.LocalDataSource
-import tech.medina.drivertracking.data.datasource.local.db.entities.DeliveryLocal
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
-import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesResponse
-import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
-import tech.medina.drivertracking.data.utils.mock
-import tech.medina.drivertracking.domain.model.Delivery
+import tech.medina.drivertracking.data.utils.TestingUtils
 import tech.medina.drivertracking.domain.model.DeliveryStatus
 
 @ExperimentalCoroutinesApi
@@ -21,17 +17,17 @@ class DeliveryRepositoryImplTest : BaseTest() {
     private val localDataSource = mockk<LocalDataSource> {
         coEvery { saveDelivery(any()) } returns true
         coEvery { updateDelivery(any()) } returns true
-        coEvery { getDeliveryList() } returns listOf(DeliveryLocal.mock())
-        coEvery { getDeliveryWithId(any()) } returns DeliveryLocal.mock()
+        coEvery { getDeliveryList() } returns listOf(TestingUtils.mockDeliveryLocal())
+        coEvery { getDeliveryWithId(any()) } returns TestingUtils.mockDeliveryLocal()
         coEvery { saveTracking(any()) } returns true
         coEvery { updateTracking(any()) } returns true
         coEvery { deleteTracking(any()) } returns true
     }
 
     private val remoteDataSource = mockk<RemoteDataSource> {
-        coEvery { getDeliveryList() } returns DeliveriesResponse.mock()
-        coEvery { getDeliveryDetailForId(any()) } returns DeliveriesResponse.mock(isFull = true).deliveries.first()
-        coEvery { postTracking(any()) } returns TrackingResponse.mock()
+        coEvery { getDeliveryList() } returns TestingUtils.mockDeliveriesResponse()
+        coEvery { getDeliveryDetailForId(any()) } returns TestingUtils.mockDeliveriesResponse(isFull = true).deliveries.first()
+        coEvery { postTracking(any()) } returns TestingUtils.mockTrackingResponse()
     }
 
     private val deliveryRepository = DeliveryRepositoryImpl(localDataSource, remoteDataSource, mapper)
@@ -54,7 +50,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
 
     @Test
     fun `getDeliveryList is empty and must update`() = dispatcher.runBlockingTest {
-        coEvery { localDataSource.getDeliveryList() } returnsMany listOf(emptyList(),listOf(DeliveryLocal.mock()))
+        coEvery { localDataSource.getDeliveryList() } returnsMany listOf(emptyList(),listOf(TestingUtils.mockDeliveryLocal()))
         with(deliveryRepository.getDeliveryList()) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.first().customerName).isNotEmpty()
@@ -87,7 +83,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
 
     @Test
     fun `getDeliveryDetail from local is not complete and must update`() = dispatcher.runBlockingTest {
-        coEvery { localDataSource.getDeliveryWithId(any()) } returnsMany listOf(DeliveryLocal.mock(), DeliveryLocal.mock(isFull = true))
+        coEvery { localDataSource.getDeliveryWithId(any()) } returnsMany listOf(TestingUtils.mockDeliveryLocal(), TestingUtils.mockDeliveryLocal(isFull = true))
         with(deliveryRepository.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotEmpty()
@@ -102,7 +98,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
 
     @Test
     fun `getDeliveryDetail from local with full data`() = dispatcher.runBlockingTest {
-        coEvery { localDataSource.getDeliveryWithId(any()) } returns DeliveryLocal.mock(isFull = true)
+        coEvery { localDataSource.getDeliveryWithId(any()) } returns TestingUtils.mockDeliveryLocal(isFull = true)
         with(deliveryRepository.getDeliveryDetailForId(123)) {
             Truth.assertThat(this).isNotNull()
             Truth.assertThat(this.customerName).isNotEmpty()
@@ -119,7 +115,7 @@ class DeliveryRepositoryImplTest : BaseTest() {
 
     @Test
     fun `updateDelivery successfully`() = dispatcher.runBlockingTest {
-        with(deliveryRepository.updateDelivery(Delivery.mock())) {
+        with(deliveryRepository.updateDelivery(TestingUtils.mockDelivery())) {
             Truth.assertThat(this).isTrue()
         }
         coVerifySequence {

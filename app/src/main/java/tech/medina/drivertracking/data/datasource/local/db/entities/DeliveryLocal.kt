@@ -20,7 +20,4 @@ data class DeliveryLocal(
         return requiresSignature != null && specialInstructions != null
     }
 
-    //This declaration is necessary to provide mocks of this class by extensions in the tests
-    companion object { }
-
 }

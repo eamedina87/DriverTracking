@@ -7,12 +7,7 @@ data class TrackingRequest(
     val driverId: Long,
     @SerializedName("tracking_data")
     val list: List<TrackingData>
-) {
-
-    //This declaration is necessary to provide mocks of this class by extensions in the tests
-    companion object {  }
-
-}
+)
 
 data class TrackingData(
         @SerializedName("latitude")
