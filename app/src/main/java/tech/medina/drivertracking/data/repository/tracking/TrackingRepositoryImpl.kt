@@ -2,7 +2,6 @@ package tech.medina.drivertracking.data.repository.tracking
 
 import tech.medina.drivertracking.data.datasource.local.LocalDataSource
 import tech.medina.drivertracking.data.datasource.remote.RemoteDataSource
-import tech.medina.drivertracking.data.datasource.remote.api.entities.response.ResponseStatus
 import tech.medina.drivertracking.data.mapper.Mapper
 import tech.medina.drivertracking.domain.model.Tracking
 import tech.medina.drivertracking.domain.model.TrackingStatus
@@ -21,6 +20,13 @@ class TrackingRepositoryImpl @Inject constructor(
         return localDataSource.saveTracking(* localData.toTypedArray())
     }
 
+    override suspend fun updateTrackingData(vararg data: Tracking): Boolean {
+        val localData = data.map {
+            mapper.toLocal(it)
+        }
+        return localDataSource.updateTracking(* localData.toTypedArray())
+    }
+
     override suspend fun getTrackingDataWithPredicate(predicate: (Tracking) -> Boolean): List<Tracking> =
         localDataSource.getAllTracking().map {
             mapper.toModel(it)
@@ -37,7 +43,8 @@ class TrackingRepositoryImpl @Inject constructor(
 
     override suspend fun postTrackingData(tracking: List<Tracking>): Boolean {
         val data = mapper.toRemote(tracking, localDataSource.getDriverId())
-        return remoteDataSource.postTracking(data).status == ResponseStatus.OK.status
+        val response = remoteDataSource.postTracking(data)
+        return response != null
     }
 
 }

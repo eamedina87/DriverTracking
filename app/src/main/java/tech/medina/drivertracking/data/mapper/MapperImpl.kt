@@ -34,8 +34,8 @@ class MapperImpl @Inject constructor(): Mapper {
         )
 
     override fun toRemote(tracking: List<Tracking>, driverId: Long): TrackingRequest {
-        val data: List<TrackingData> = tracking.flatMap {
-            listOf(toRemote(it))
+        val data: List<TrackingData> = tracking.map {
+            toRemote(it)
         }
         return TrackingRequest(driverId, data)
     }

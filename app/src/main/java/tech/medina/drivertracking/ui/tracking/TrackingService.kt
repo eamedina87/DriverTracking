@@ -45,7 +45,7 @@ class TrackingService: Service() {
     private var isSaveTimerActive: Boolean = false
     private var isSendTimerActive: Boolean = false
     private val savePeriod = 1000L // 1 second
-    private val sendPeriod = 300 * 1000L // 10 seconds
+    private val sendPeriod = 60 * 1000L // 10 seconds
     private val saveTimer: Timer = Timer()
     private val sendTimer: Timer = Timer()
 

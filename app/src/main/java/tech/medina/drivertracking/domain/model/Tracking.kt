@@ -6,7 +6,7 @@ data class Tracking(
     val deliveryId: Long,
     val batteryLevel: Int,
     val timestamp: Long,
-    val status: TrackingStatus
+    var status: TrackingStatus
 ) {
 
     companion object { }
@@ -14,12 +14,11 @@ data class Tracking(
 }
 
 enum class TrackingStatus {
-    DEFAULT, SAVED, SENT
+    DEFAULT, SENT
 }
 
 fun Int.toTrackingStatus(): TrackingStatus =
     when (this) {
-        TrackingStatus.SAVED.ordinal -> TrackingStatus.SAVED
         TrackingStatus.SENT.ordinal -> TrackingStatus.SENT
         else -> TrackingStatus.DEFAULT
     }

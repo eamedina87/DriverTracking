@@ -5,6 +5,7 @@ import tech.medina.drivertracking.data.datasource.remote.api.TrackingService
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveriesResponse
 import tech.medina.drivertracking.data.datasource.remote.api.entities.DeliveryRemote
 import tech.medina.drivertracking.data.datasource.remote.api.entities.request.TrackingRequest
+import tech.medina.drivertracking.data.datasource.remote.api.entities.response.TrackingResponse
 import javax.inject.Inject
 
 class RemoteDataSourceImpl @Inject constructor(
@@ -18,7 +19,7 @@ class RemoteDataSourceImpl @Inject constructor(
     override suspend fun getDeliveryDetailForId(id: Long): DeliveryRemote =
         deliveryService.getDeliveryDetailForId(id).delivery.first()
 
-    override suspend fun postTracking(tracking: TrackingRequest) =
+    override suspend fun postTracking(tracking: TrackingRequest): TrackingResponse =
         trackingService.postTracking(tracking)
 
 }
