@@ -64,7 +64,7 @@ Using MyJsonServer with a physical device or emulator
 
 *Note*: during the development of this app there were ocassions in which the server was out. So it is possible that during the testing of the app it can happen again.
 
-*Important*: If any of these urls are changed in the gradle.properties, due to security configurations, they must also be updated in `network_security_config.xml` 
+*Important*: If any of these urls are changed in the gradle.properties, due to security configurations, they must also be updated in [the security configuration file](app/src/main/res/xml/network_security_config.xml) 
 
 ## Background Service
 
