@@ -56,11 +56,15 @@ The configuration file is [drivertracking.json](drivertracking.json).
 
 `API_BASE_URL_LOCAL="http://SERVER_URL:3001/api/"`
 
+To use this environment select *debug* in Build Variants in Android Studio.
+
 **Remote**
 
 Using MyJsonServer with a physical device or emulator
 
 `API_BASE_URL_REMOTE="https://my-json-server.typicode.com/eamedina87/drivertracking-backend/"`
+
+To use this environment select *release* in Build Variants in Android Studio.
 
 *Note*: during the development of this app there were ocassions in which the server was out. So it is possible that during the testing of the app it can happen again.
 
