@@ -18,22 +18,24 @@ class TrackingManager @Inject constructor(
     }
 
     private val serviceIntent = Intent(context, TrackingService::class.java)
-    private var currentDeliveryId: Long = -1
     private var currentState: State = State.DEFAULT
 
-    fun start(deliveryId: Long, onSuccessStart: (() -> Unit)? = null) {
+    fun start(onSuccessStart: (() -> Unit)? = null) {
         when(currentState) {
             State.DEFAULT,
             State.STOPPED -> {
                 startTracking()
-                currentDeliveryId = deliveryId
                 onSuccessStart?.invoke()
             }
             State.STARTED -> {
                 stopTracking()
-                currentDeliveryId = -1
             }
         }
+    }
+
+    fun update() {
+        if (currentState != State.STARTED) return
+        startTracking()
     }
 
     fun stop() {

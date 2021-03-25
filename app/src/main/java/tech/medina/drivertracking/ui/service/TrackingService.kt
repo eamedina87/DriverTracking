@@ -23,6 +23,12 @@ import tech.medina.drivertracking.ui.delivery.list.DeliveryListActivity
 import tech.medina.drivertracking.domain.location.LocationManager
 import tech.medina.drivertracking.ui.utils.Constants.LOG_TAG_APP
 import tech.medina.drivertracking.ui.utils.Constants.NOTIFICATION_ID
+import tech.medina.drivertracking.ui.utils.Constants.TRACKING_REMOVE_INIT_DELAY
+import tech.medina.drivertracking.ui.utils.Constants.TRACKING_REMOVE_PERIOD
+import tech.medina.drivertracking.ui.utils.Constants.TRACKING_SAVE_INIT_DELAY
+import tech.medina.drivertracking.ui.utils.Constants.TRACKING_SAVE_PERIOD
+import tech.medina.drivertracking.ui.utils.Constants.TRACKING_SEND_INIT_DELAY
+import tech.medina.drivertracking.ui.utils.Constants.TRACKING_SEND_PERIOD
 import java.util.*
 import javax.inject.Inject
 
@@ -50,9 +56,6 @@ class TrackingService: Service() {
     private var isSaveTimerActive: Boolean = false
     private var isSendTimerActive: Boolean = false
     private var isRemoveTimerActive: Boolean = false
-    private val savePeriod = 1000L // 1 second
-    private val sendPeriod = 30 * 1000L // 10 seconds
-    private val removePeriod = 60 * 1000L // 1 minute
     private val saveTimer: Timer = Timer()
     private val sendTimer: Timer = Timer()
     private val removeTimer: Timer = Timer()
@@ -122,21 +125,21 @@ class TrackingService: Service() {
 
     private fun initSendTrackingTimer() {
         if (!isSendTimerActive) {
-            sendTimer.scheduleAtFixedRate(sendTimerTask, 3 * 1000, sendPeriod)
+            sendTimer.scheduleAtFixedRate(sendTimerTask, TRACKING_SEND_INIT_DELAY, TRACKING_SEND_PERIOD)
             isSendTimerActive = true
         }
     }
 
     private fun initSaveTrackingTimer() {
         if (!isSaveTimerActive) {
-            saveTimer.scheduleAtFixedRate(saveTimerTask, 5 * 1000, savePeriod)
+            saveTimer.scheduleAtFixedRate(saveTimerTask, TRACKING_SAVE_INIT_DELAY, TRACKING_SAVE_PERIOD)
             isSaveTimerActive = true
         }
     }
 
     private fun initRemoveTrackingTimer() {
         if (!isRemoveTimerActive) {
-            removeTimer.scheduleAtFixedRate(removeTimerTask, 40 * 1000, removePeriod)
+            removeTimer.scheduleAtFixedRate(removeTimerTask, TRACKING_REMOVE_INIT_DELAY, TRACKING_REMOVE_PERIOD)
             isRemoveTimerActive = true
         }
     }
@@ -144,6 +147,7 @@ class TrackingService: Service() {
     private fun initBatteryManager() {
         if (batteryManager.mustBeInitialized()) {
             batteryManager.init() {
+                Log.d(LOG_TAG_APP, "TrackingService batteryPercentage:$it")
                 currentBatteryPercentage = it
             }
         }
@@ -151,13 +155,15 @@ class TrackingService: Service() {
 
     private suspend fun getActiveDelivery() {
         getActiveDeliveryUseCase()?.let {
+            Log.d(LOG_TAG_APP, "TrackingService activeDelivery:$it")
             activeDelivery = it
         }
     }
 
     private fun initLocationManager() {
         if (locationManager.mustBeInitialized()) {
-            locationManager.init() {
+            locationManager.init {
+                Log.d(LOG_TAG_APP, "TrackingService currentLocation:$it")
                 currentLocation = it
             }
         }

@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import tech.medina.drivertracking.ui.utils.Constants
+import tech.medina.drivertracking.ui.utils.Constants.BATTERY_UPDATE_PERIOD
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,19 +25,19 @@ class BatteryManager @Inject constructor(
 
     private var onBatteryPercentageObtained: ((Int) -> Unit)? = null
     private var state: State = State.DEFAULT
-    private val updatePeriod =  5 * 60 * 1000L // 5 minutes
-    private var timer: Timer = Timer()
+    private var timer: Timer? = null
 
     fun init(onBatteryPercentageObtained: (Int) -> Unit) {
         if (!mustBeInitialized()) return
         Log.d(Constants.LOG_TAG_APP, "BatteryManager.init")
         this.onBatteryPercentageObtained = onBatteryPercentageObtained
         state = try {
-            timer.scheduleAtFixedRate(object: TimerTask() {
+            timer = Timer()
+            timer?.scheduleAtFixedRate(object: TimerTask() {
                 override fun run() {
                     getBatteryData()
                 }
-            }, 0, updatePeriod)
+            }, 0, BATTERY_UPDATE_PERIOD)
             State.INITIALIZED
         } catch (e: IllegalStateException) {
             State.ERROR
@@ -45,7 +46,7 @@ class BatteryManager @Inject constructor(
 
     fun stop() {
         Log.d(Constants.LOG_TAG_APP, "BatteryManager.stop")
-        timer.cancel()
+        timer?.cancel()
         state = State.STOPPED
     }
 

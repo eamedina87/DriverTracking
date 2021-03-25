@@ -9,6 +9,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import tech.medina.drivertracking.data.mapper.Mapper
 import tech.medina.drivertracking.domain.model.Location
 import tech.medina.drivertracking.ui.utils.Constants
+import tech.medina.drivertracking.ui.utils.Constants.LOCATION_SMALLEST_DISPLACEMENT
+import tech.medina.drivertracking.ui.utils.Constants.LOCATION_UPDATE_FASTEST_INTERVAL
+import tech.medina.drivertracking.ui.utils.Constants.LOCATION_UPDATE_INTERVAL
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,9 +31,9 @@ class LocationManager @Inject constructor(
 
     private val locationRequest: LocationRequest by lazy {
         LocationRequest.create().apply {
-            interval = 2000
-            fastestInterval = 1000
-            smallestDisplacement = 5f
+            interval = LOCATION_UPDATE_INTERVAL
+            fastestInterval = LOCATION_UPDATE_FASTEST_INTERVAL
+            smallestDisplacement = LOCATION_SMALLEST_DISPLACEMENT
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }

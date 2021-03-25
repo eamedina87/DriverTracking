@@ -82,18 +82,27 @@ class DeliveryViewModel @Inject constructor(
                 _deliveryActionState.value = DataState.Error(currentActiveDelivery)
                 return@launch
             }
-            when(delivery.status) {
-                DeliveryStatus.DEFAULT -> {
+            when {
+                //There is no active tracking, we start the service for this delivery
+                delivery.status == DeliveryStatus.DEFAULT && !canCancelActiveDelivery -> {
                     setActiveDeliveryUseCase(delivery)
-                    trackingManager.start(delivery.id)
+                    trackingManager.start()
                     _deliveryActionState.value = DataState.Success(true)
                 }
-                DeliveryStatus.ACTIVE -> {
-                    trackingManager.stop()
+                //If there is an active tracking, we must set this an active
+                //and update the service keeping it alive
+                delivery.status == DeliveryStatus.DEFAULT && canCancelActiveDelivery -> {
+                    setActiveDeliveryUseCase(delivery)
+                    trackingManager.update()
+                    _deliveryActionState.value = DataState.Success(true)
+                }
+                //This is the active tracking, we must stop the service
+                delivery.status == DeliveryStatus.ACTIVE && !canCancelActiveDelivery -> {
                     setCompleteDeliveryUseCase(delivery)
+                    trackingManager.stop()
                     _deliveryActionState.value = DataState.Success(true)
                 }
-                DeliveryStatus.COMPLETED ->
+                delivery.status == DeliveryStatus.COMPLETED ->
                     _deliveryActionState.value = DataState.Error(context.getString(R.string.delivery_action_error_completed))
             }
         }
