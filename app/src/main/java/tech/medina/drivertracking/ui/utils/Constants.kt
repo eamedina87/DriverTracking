@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 
 object Constants {
 
-    const val LOG_TAG_APP = "drivetracking.log"
+    const val LOG_TAG_APP = "drivertracking.log"
     const val INTENT_EXTRA_DELIVERY_ID = "drivetracking.intent.extra.delivery.id"
     const val LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
     @RequiresApi(Build.VERSION_CODES.Q)

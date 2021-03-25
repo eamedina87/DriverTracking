@@ -39,7 +39,7 @@ open class BaseTest : CoroutineScope {
 
     @Test
     fun `baseTest is working`() {
-        
+
     }
 
     private fun setupCoroutines() {
