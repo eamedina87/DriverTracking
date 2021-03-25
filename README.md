@@ -21,34 +21,38 @@ Runs a service that tracks your position during an active delivery, saves to dat
 
 MVVM + Clean
 
-Dependency Injection with Hilt
+[Dependency Injection](app/src/main/java/tech/medina/drivertracking/di) with Hilt
 
-**Data**
-- Repository
-- DataSources
-   - Database
-   - Api
+- **[Data](app/src/main/java/tech/medina/drivertracking/data)** 
+  - Repository
+  - DataSources
+     - Database
+     - Api
 
-**Domain**
-- Use Cases
-- Managers
 
-**Presentation**
-- Activity/Fragment
-- Service
-- ViewModel
+- **[Domain](app/src/main/java/tech/medina/drivertracking/domain)** 
+  - Use Cases
+  - Managers
 
-## Testing
+
+- **[Presentation](app/src/main/java/tech/medina/drivertracking/ui)** 
+  - Activity/Fragment
+  - Service
+  - ViewModel
+
+
+## [Testing](app/src/test/java/tech/medina/drivertracking/data)
 
 With MockK library. Due to the time constraint only unit tests were developed for datasources and repositories.
 
 ## Environments
 
-API urls are configured in the gradle.properties file
+API urls are configured in the [gradle.properties](gradle.properties) file
 
 **Local**
 
 Using Mockoon server and testing with a physical device
+The configuration file is [drivertracking.json](drivertracking.json).
 
 `API_BASE_URL_LOCAL="http://SERVER_URL:3001/api/"`
 
@@ -64,11 +68,11 @@ Using MyJsonServer with a physical device or emulator
 
 ## Background Service
 
-The Service in charge of acquiring the location and battery information, and saving to local and then sending to the API is the Tracking Service.
+The Service in charge of acquiring the location and battery information, and saving to local and then sending to the API is the [Tracking Service](app/src/main/java/tech/medina/drivertracking/ui/service/TrackingService.kt).
 
 There are several log messages put in place so that when executing the app we could see how everything is working in the background.
 
-It is recommended that in the Android Studio's Logcat we filter the info with the text found in the LOG_TAG_APP constant.
+It is recommended that in the Android Studio's Logcat we filter the info with the text found in the [Constants](app/src/main/java/tech/medina/drivertracking/ui/utils/Constants.kt).
 
 `const val LOG_TAG_APP = "drivertracking.log"`
 
@@ -82,7 +86,7 @@ The app also can work in Tablets with a differentiated UI.
 
 MIT License
 
-Copyright (c) [year] [fullname]
+Copyright (c) [2021] [Erick Medina]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
